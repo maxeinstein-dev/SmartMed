@@ -31,7 +31,7 @@ public class ConsultaModel {
 
     @Column(name = "valor", nullable = false)
     @NotNull(message = "O valor não pode ser nulo.")
-    private Double valor;
+    private BigDecimal valor;
 
     @Column(name = "observacoes", length = 1024, nullable = true)
     private String observacoes;
@@ -65,13 +65,19 @@ public class ConsultaModel {
         if (medico != null) {
             BigDecimal valorBase = BigDecimal.valueOf(medico.getValorConsultaReferencia());
 
+            // A consulta foi cancelada, o valor é zero.
+            if ("CANCELADA".equals(this.status)) {
+                this.valor = BigDecimal.ZERO;
+                return;
+            }
+
+            // Aplica desconto do convênio, se houver
             if (convenio != null && convenio.getPorcentagemDesconto() != null) {
-                // Aplica desconto do convênio
-                BigDecimal desconto = BigDecimal.ONE.subtract(convenio.getPorcentagemDesconto());
-                this.valor = valorBase.multiply(desconto).doubleValue();
+                BigDecimal porcentagemDesconto = convenio.getPorcentagemDesconto();
+                BigDecimal desconto = BigDecimal.ONE.subtract(porcentagemDesconto);
+                this.valor = valorBase.multiply(desconto);
             } else {
-                // Valor sem desconto
-                this.valor = valorBase.doubleValue();
+                this.valor = valorBase;
             }
         }
     }

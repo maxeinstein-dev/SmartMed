@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgendaMedicoRequestDTO {
+public class AgendaMedicaRequestDTO {
     @NotNull(message = "O ID do médico é obrigatório.")
     private Integer medicoID;
 

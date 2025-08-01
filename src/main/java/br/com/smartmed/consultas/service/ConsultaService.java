@@ -311,9 +311,9 @@ public class ConsultaService {
                     if (request.getConvenioID() != null) {
                         convenio = convenioService.obterConvenioModelPorId(request.getConvenioID());
                         novaConsulta.setConvenio(convenio);
-                        novaConsulta.setValor(valorBase.multiply(BigDecimal.valueOf(0.50)).doubleValue());
+                        novaConsulta.setValor(BigDecimal.valueOf(valorBase.multiply(BigDecimal.valueOf(0.50)).doubleValue()));
                     } else {
-                        novaConsulta.setValor(valorBase.doubleValue());
+                        novaConsulta.setValor(BigDecimal.valueOf(valorBase.doubleValue()));
                     }
 
                     ConsultaModel consultaAgendada = consultaRepository.save(novaConsulta);
@@ -387,7 +387,7 @@ public class ConsultaService {
      * @throws BusinessRuleException Se o médico estiver inativo.
      */
     @Transactional(readOnly = true)
-    public AgendaMedicoResponseDTO obterAgendaMedico(AgendaMedicoRequestDTO request) {
+    public AgendaMedicaResponseDTO obterAgendaMedico(AgendaMedicaRequestDTO request) {
         // 1. Verificar se o médico existe e está ativo
         MedicoModel medico = medicoService.buscarMedicoModelPorIdEAtivo(request.getMedicoID());
 
@@ -450,12 +450,44 @@ public class ConsultaService {
         }
 
         // 6. Construir a resposta
-        AgendaMedicoResponseDTO responseDTO = new AgendaMedicoResponseDTO();
+        AgendaMedicaResponseDTO responseDTO = new AgendaMedicaResponseDTO();
         responseDTO.setMedico(medico.getNome());
         responseDTO.setData(request.getData());
         responseDTO.setHorariosOcupados(horariosOcupados);
         responseDTO.setHorariosDisponiveis(horariosDisponiveis);
 
         return responseDTO;
+    }
+
+    /**
+     * Cancela uma consulta agendada.
+     *
+     * @param cancelamentoDTO DTO com o ID da consulta e o motivo do cancelamento.
+     * @return DTO da consulta cancelada.
+     * @throws ObjectNotFoundException Se a consulta não for encontrada.
+     * @throws BusinessRuleException Se a consulta não puder ser cancelada (por status ou data).
+     */
+    @Transactional
+    public ConsultaDTO cancelarConsulta(CancelamentoConsultaDTO cancelamentoDTO) {
+        ConsultaModel consulta = consultaRepository.findById(cancelamentoDTO.getConsultaId())
+                .orElseThrow(() -> new ObjectNotFoundException("Consulta com ID " + cancelamentoDTO.getConsultaId() + " não encontrada."));
+
+        // Regra de Negócio: Apenas consultas com status AGENDADA podem ser canceladas.
+        if (!"AGENDADA".equals(consulta.getStatus())) {
+            throw new BusinessRuleException("A consulta com ID " + consulta.getId() + " não pode ser cancelada, pois seu status não é 'AGENDADA'.");
+        }
+
+        if (consulta.getDataHoraConsulta().isBefore(LocalDateTime.now())) {
+            throw new BusinessRuleException("A consulta com ID " + consulta.getId() + " não pode ser cancelada, pois sua data já é passada.");
+        }
+
+        // Atualiza o status e as observações
+        consulta.setStatus("CANCELADA");
+        consulta.setObservacoes(cancelamentoDTO.getMotivo());
+
+        // O valor será automaticamente atualizado para zero pelo método @PreUpdate na entidade ConsultaModel.
+
+        ConsultaModel consultaCancelada = consultaRepository.save(consulta);
+        return modelMapper.map(consultaCancelada, ConsultaDTO.class);
     }
 }

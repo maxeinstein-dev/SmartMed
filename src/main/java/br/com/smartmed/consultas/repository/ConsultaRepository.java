@@ -39,71 +39,59 @@ public interface ConsultaRepository extends JpaRepository<ConsultaModel, Long> {
             "WHERE c.status = 'REALIZADA' " +
             "AND c.dataHoraConsulta BETWEEN :dataInicio AND :dataFim " +
             "ORDER BY c.dataHoraConsulta")
-    List<ConsultaModel> findConsultasRealizadasNoPeriodo(
+    List<ConsultaModel> findConsultasRealizadasByPeriodo(
             @Param("dataInicio") LocalDateTime dataInicio,
             @Param("dataFim") LocalDateTime dataFim);
 
-    /**
-     * Busca todas as consultas agendadas ou realizadas de um médico dentro de um período.
-     * A lógica de sobreposição será inteiramente realizada no Service.
-     *
-     * @param medicoId ID do médico.
-     * @param inicioPeriodo Início do período a ser consultado.
-     * @param fimPeriodo Fim do período a ser consultado.
-     * @return Lista de consultas do médico dentro do período especificado.
-     */
     @Query("SELECT c FROM ConsultaModel c " +
             "WHERE c.medico.id = :medicoId " +
-            "AND c.status IN ('AGENDADA', 'REALIZADA') " +
-            "AND c.dataHoraConsulta BETWEEN :inicioPeriodo AND :fimPeriodo " +
-            "ORDER BY c.dataHoraConsulta")
+            "AND c.dataHoraConsulta >= :dataInicio " +
+            "AND c.dataHoraConsulta < :dataFim")
     List<ConsultaModel> findConsultasByMedicoAndPeriod(
             @Param("medicoId") Integer medicoId,
-            @Param("inicioPeriodo") LocalDateTime inicioPeriodo,
-            @Param("fimPeriodo") LocalDateTime fimPeriodo);
+            @Param("dataInicio") LocalDateTime dataInicio,
+            @Param("dataFim") LocalDateTime dataFim
+    );
 
-    /**
-     * Busca o histórico detalhado de consultas de um paciente com filtros opcionais.
-     *
-     * @param pacienteId ID do paciente.
-     * @param dataInicio Início do intervalo de datas (opcional).
-     * @param dataFim Fim do intervalo de datas (opcional).
-     * @param medicoId ID do médico específico (opcional).
-     * @param status Status da consulta (opcional).
-     * @param especialidadeId ID da especialidade (opcional).
-     * @return Lista de consultas que correspondem aos critérios.
-     */
     @Query("SELECT c FROM ConsultaModel c " +
             "WHERE c.paciente.id = :pacienteId " +
             "AND (:dataInicio IS NULL OR c.dataHoraConsulta >= :dataInicio) " +
             "AND (:dataFim IS NULL OR c.dataHoraConsulta <= :dataFim) " +
             "AND (:medicoId IS NULL OR c.medico.id = :medicoId) " +
             "AND (:status IS NULL OR c.status = :status) " +
-            "AND (:especialidadeId IS NULL OR c.medico.especialidade.id = :especialidadeId) " +
-            "ORDER BY c.dataHoraConsulta DESC")
+            "AND (:especialidadeId IS NULL OR c.medico.especialidade.id = :especialidadeId)")
     List<ConsultaModel> findHistoricoConsultas(
             @Param("pacienteId") Integer pacienteId,
             @Param("dataInicio") LocalDateTime dataInicio,
             @Param("dataFim") LocalDateTime dataFim,
             @Param("medicoId") Integer medicoId,
             @Param("status") String status,
-            @Param("especialidadeId") Integer especialidadeId);
+            @Param("especialidadeId") Integer especialidadeId
+    );
 
-    /**
-     * Busca todas as consultas de um médico em uma data específica.
-     *
-     * @param medicoId ID do médico.
-     * @param dataInicio Dia completo (início do dia).
-     * @param dataFim Dia completo (fim do dia).
-     * @return Lista de consultas do médico para a data.
-     */
     @Query("SELECT c FROM ConsultaModel c " +
             "WHERE c.medico.id = :medicoId " +
-            "AND c.dataHoraConsulta BETWEEN :dataInicio AND :dataFim " +
-            "AND c.status IN ('AGENDADA', 'REALIZADA') " +
-            "ORDER BY c.dataHoraConsulta ASC")
+            "AND c.dataHoraConsulta >= :inicioDoDia " +
+            "AND c.dataHoraConsulta <= :fimDoDia")
     List<ConsultaModel> findConsultasByMedicoAndDate(
             @Param("medicoId") Integer medicoId,
+            @Param("inicioDoDia") LocalDateTime inicioDoDia,
+            @Param("fimDoDia") LocalDateTime fimDoDia
+    );
+
+    @Query("SELECT c FROM ConsultaModel c " +
+            "WHERE c.status = 'REALIZADA' " +
+            "AND c.dataHoraConsulta BETWEEN :dataInicio AND :dataFim " +
+            "AND (:medicoId IS NULL OR c.medico.id = :medicoId) " +
+            "AND (:pacienteId IS NULL OR c.paciente.id = :pacienteId) " +
+            "AND (:formaPagamentoId IS NULL OR c.formaPagamento.id = :formaPagamentoId) " +
+            "AND (:convenioId IS NULL OR c.convenio.id = :convenioId)")
+    List<ConsultaModel> findByFaturamentoPeriodo(
             @Param("dataInicio") LocalDateTime dataInicio,
-            @Param("dataFim") LocalDateTime dataFim);
+            @Param("dataFim") LocalDateTime dataFim,
+            @Param("medicoId") Integer medicoId,
+            @Param("pacienteId") Integer pacienteId,
+            @Param("formaPagamentoId") Integer formaPagamentoId,
+            @Param("convenioId") Integer convenioId
+    );
 }

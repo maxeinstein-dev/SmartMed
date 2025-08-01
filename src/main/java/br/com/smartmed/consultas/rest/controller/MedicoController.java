@@ -1,8 +1,8 @@
 package br.com.smartmed.consultas.rest.controller;
 
 import br.com.smartmed.consultas.model.MedicoModel;
-import br.com.smartmed.consultas.rest.dto.AgendaMedicoRequestDTO;
-import br.com.smartmed.consultas.rest.dto.AgendaMedicoResponseDTO;
+import br.com.smartmed.consultas.rest.dto.AgendaMedicaRequestDTO;
+import br.com.smartmed.consultas.rest.dto.AgendaMedicaResponseDTO;
 import br.com.smartmed.consultas.rest.dto.MedicoDTO;
 import br.com.smartmed.consultas.service.ConsultaService;
 import br.com.smartmed.consultas.service.MedicoService;
@@ -95,8 +95,8 @@ public class MedicoController {
      * @return ResponseEntity com a agenda do médico.
      */
     @PostMapping("/agenda")
-    public ResponseEntity<AgendaMedicoResponseDTO> obterAgendaMedico(@Valid @RequestBody AgendaMedicoRequestDTO request) {
-        AgendaMedicoResponseDTO response = consultaService.obterAgendaMedico(request);
+    public ResponseEntity<AgendaMedicaResponseDTO> obterAgendaMedico(@Valid @RequestBody AgendaMedicaRequestDTO request) {
+        AgendaMedicaResponseDTO response = consultaService.obterAgendaMedico(request);
         return ResponseEntity.ok(response);
     }
 }

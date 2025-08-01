@@ -3,9 +3,14 @@ package br.com.smartmed.consultas.service;
 import br.com.smartmed.consultas.exception.*;
 import br.com.smartmed.consultas.model.RecepcionistaModel;
 import br.com.smartmed.consultas.repository.RecepcionistaRepository;
+import br.com.smartmed.consultas.rest.dto.PageResponseDTO;
 import br.com.smartmed.consultas.rest.dto.RecepcionistaDTO;
+import br.com.smartmed.consultas.rest.dto.RecepcionistaFilterRequestDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -198,5 +203,34 @@ public class RecepcionistaService {
         } catch (ObjectNotFoundException e) {
             throw new ObjectNotFoundException("Erro! Não foi possível deletar a Recepcionista" + RecepcionistaExistente.getNome() + ". Não encontrado no banco de dados!");
         }
+    }
+
+    /**
+     * Lista recepcionistas com filtros de status e faixa de data de admissão, com paginação.
+     *
+     * @param filter DTO com os filtros e dados de paginação.
+     * @return Um PageResponseDTO contendo a lista de recepcionistas paginada.
+     */
+    @Transactional(readOnly = true)
+    public PageResponseDTO<RecepcionistaDTO> listarComFiltroEPaginacao(RecepcionistaFilterRequestDTO filter) {
+        Pageable pageable = PageRequest.of(filter.getPagina(), filter.getTamanhoPagina());
+
+        // Mapeia o status do DTO para um valor booleano ou nulo
+        Boolean status = null;
+        if (filter.getStatus() != null && !filter.getStatus().isBlank()) {
+            status = filter.getStatus().equalsIgnoreCase("ATIVO");
+        }
+
+        Page<RecepcionistaModel> recepcionistasPage = recepcionistaRepository.findByStatusAndDataAdmissao(
+                status,
+                filter.getDataInicio(),
+                filter.getDataFim(),
+                pageable
+        );
+
+        // Mapeia a página de modelos para uma página de DTOs
+        Page<RecepcionistaDTO> dtoPage = recepcionistasPage.map(recepcionista -> modelMapper.map(recepcionista, RecepcionistaDTO.class));
+
+        return new PageResponseDTO<>(dtoPage);
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgendaMedicoResponseDTO {
+public class AgendaMedicaResponseDTO {
     private String medico;
     private LocalDate data;
     private List<String> horariosOcupados;

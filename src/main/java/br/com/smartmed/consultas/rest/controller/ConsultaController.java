@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controlador responsável por gerenciar as operações relacionadas às consultas.
@@ -112,5 +113,23 @@ public class ConsultaController {
     public ResponseEntity<List<HistoricoConsultaResponseDTO>> obterHistoricoConsultas(@Valid @RequestBody HistoricoConsultaRequestDTO request) {
         List<HistoricoConsultaResponseDTO> historico = consultaService.obterHistoricoConsultas(request);
         return ResponseEntity.ok(historico);
+    }
+
+    /**
+     * Cancela uma consulta agendada.
+     * Link: http://localhost:8080/api/consulta/cancelar
+     *
+     * @param cancelamentoDTO DTO contendo o ID da consulta e o motivo do cancelamento.
+     * @return Resposta com uma mensagem de sucesso e o novo status.
+     */
+    @PutMapping("/cancelar")
+    public ResponseEntity<Map<String, String>> cancelarConsulta(@Valid @RequestBody CancelamentoConsultaDTO cancelamentoDTO) {
+        consultaService.cancelarConsulta(cancelamentoDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                Map.of(
+                        "mensagem", "Consulta cancelada com sucesso",
+                        "statusAtual", "CANCELADA"
+                )
+        );
     }
 }

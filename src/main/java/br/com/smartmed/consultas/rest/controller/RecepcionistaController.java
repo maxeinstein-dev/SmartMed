@@ -1,7 +1,9 @@
 package br.com.smartmed.consultas.rest.controller;
 
 import br.com.smartmed.consultas.model.RecepcionistaModel;
+import br.com.smartmed.consultas.rest.dto.PageResponseDTO;
 import br.com.smartmed.consultas.rest.dto.RecepcionistaDTO;
+import br.com.smartmed.consultas.rest.dto.RecepcionistaFilterRequestDTO;
 import br.com.smartmed.consultas.service.RecepcionistaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,5 +98,18 @@ public class RecepcionistaController {
     @DeleteMapping
     public void deletar(@Valid @RequestBody RecepcionistaModel recepcionistaExistente) {
         recepcionistaService.deletar(recepcionistaExistente);
+    }
+
+    /**
+     * Lista recepcionistas com filtros e paginação.
+     * Link: http://localhost:8080/api/recepcionista/filtrar
+     *
+     * @param filter DTO com os critérios de filtro e paginação.
+     * @return Uma resposta paginada com a lista de recepcionistas.
+     */
+    @PostMapping("/filtrar")
+    public ResponseEntity<PageResponseDTO<RecepcionistaDTO>> listarComFiltroEPaginacao(@Valid @RequestBody RecepcionistaFilterRequestDTO filter) {
+        PageResponseDTO<RecepcionistaDTO> response = recepcionistaService.listarComFiltroEPaginacao(filter);
+        return ResponseEntity.ok(response);
     }
 }

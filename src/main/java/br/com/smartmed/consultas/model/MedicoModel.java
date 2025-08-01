@@ -53,9 +53,6 @@ public class MedicoModel {
     @NotNull(message = "O ID da especialidade não pode ser nulo.")
     private EspecialidadeModel especialidade;
 
-//    @OneToMany(mappedBy = "medico")
-//    private List<ConsultaModel> consultas;
-
     @Column(name = "horaInicioExpediente", nullable = false)
     private LocalTime horaInicioExpediente = LocalTime.of(8, 0);
 

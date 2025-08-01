@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 //http://localhost:8080/api/swagger-ui/index.html
+//http://localhost:8080/api/h2/login.jsp?jsessionid=6818bb1f2dbc860725c1214b9ffcf500
 
 @Configuration
 public class SpringDocConfig {

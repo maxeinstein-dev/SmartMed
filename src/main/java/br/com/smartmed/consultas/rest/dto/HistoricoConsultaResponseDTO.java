@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,7 +14,7 @@ public class HistoricoConsultaResponseDTO {
     private LocalDateTime dataHora;
     private String medico; // Nome do médico
     private String especialidade; // Nome da especialidade
-    private Double valor;
+    private BigDecimal valor;
     private String status;
     private String observacoes;
 }
