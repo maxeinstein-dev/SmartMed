@@ -153,3 +153,12 @@ INSERT INTO consulta (dataHoraConsulta, status, valor, pacienteId, medicoId, for
 VALUES
     ('2025-08-09 14:00:00', 'REMARCADA', 300.00, 30, 1, 2, 13),
     ('2025-08-21 10:00:00', 'REMARCADA', 350.00, 4, 2, 1, 14);
+
+-- Novas consultas AGENDADAS para teste de cancelamento (setembro e outubro de 2025)
+INSERT INTO consulta (id, dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId, convenioId, recepcionistaId)
+VALUES
+    (101, '2025-09-01 09:00:00', 'AGENDADA', 300.00, 'Consulta agendada para cancelamento.', 1, 1, 1, NULL, 1),
+    (102, '2025-09-05 14:30:00', 'AGENDADA', 175.00, 'Consulta com convênio, agendada para cancelamento.', 2, 2, 3, 1, 2),
+    (103, '2025-09-10 10:00:00', 'AGENDADA', 300.00, 'Consulta agendada para cancelamento.', 3, 1, 2, NULL, 3),
+    (104, '2025-10-01 11:00:00', 'AGENDADA', 350.00, 'Consulta futura para teste.', 4, 2, 1, NULL, 4),
+    (105, '2025-10-15 16:00:00', 'AGENDADA', 90.00, 'Outra consulta futura com convênio.', 5, 1, 3, 2, 5);
