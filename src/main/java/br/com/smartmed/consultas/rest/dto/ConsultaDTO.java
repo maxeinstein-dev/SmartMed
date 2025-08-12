@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class ConsultaDTO {
-    private Long id;
+    private Integer id;
     private LocalDateTime dataHoraConsulta;
     private String status;
     private Double valor;

@@ -38,14 +38,13 @@ public class MedicoService {
      * Busca um médico por ID.
      */
     @Transactional(readOnly = true)
-    public MedicoDTO buscarPorId(int id) {
-        MedicoModel medico = medicoRepository.findById(id)
+    public MedicoModel obterMedicoPorId(Integer id) {
+        return medicoRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Médico com ID " + id + " não encontrado."));
-        return modelMapper.map(medico, MedicoDTO.class);
     }
 
     @Transactional(readOnly = true)
-    public MedicoModel buscarMedicoModelPorId(Integer id) {
+    public MedicoModel obterMedicoModelPorId(Integer id) {
         return medicoRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Médico com ID " + id + " não encontrado."));
     }
@@ -56,7 +55,7 @@ public class MedicoService {
      * @param id ID do médico.
      * @return MedicoModel representando o médico encontrado e ativo.
      * @throws ObjectNotFoundException Se o médico não for encontrado.
-     * @throws BusinessRuleException Se o médico estiver inativo.
+     * @throws BusinessRuleException   Se o médico estiver inativo.
      */
     @Transactional(readOnly = true)
     public MedicoModel buscarMedicoModelPorIdEAtivo(Integer id) {

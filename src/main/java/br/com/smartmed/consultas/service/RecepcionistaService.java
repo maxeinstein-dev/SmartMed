@@ -42,9 +42,9 @@ public class RecepcionistaService {
      * @throws ObjectNotFoundException Se a Recepcionista não for encontrada.
      */
     @Transactional(readOnly = true)
-    public RecepcionistaDTO obterPorId(int id) {
-        RecepcionistaModel recepcionista = recepcionistaRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Recepcionista com ID " + id + " não encontrada."));
-        return modelMapper.map(recepcionista, RecepcionistaDTO.class);
+    public RecepcionistaModel obterRecepcionistaPorId(Integer id) {
+        return recepcionistaRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Recepcionista com ID " + id + " não encontrado."));
     }
 
     @Transactional(readOnly = true)

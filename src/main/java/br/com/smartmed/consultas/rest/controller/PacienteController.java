@@ -4,6 +4,7 @@ import br.com.smartmed.consultas.model.PacienteModel;
 import br.com.smartmed.consultas.rest.dto.PacienteDTO;
 import br.com.smartmed.consultas.service.PacienteService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,8 @@ public class PacienteController {
      */
     @Autowired
     private PacienteService pacienteService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * Obtém um paciente pelo ID.
@@ -34,7 +37,8 @@ public class PacienteController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<PacienteDTO> obterPorId(@PathVariable int id) {
-        PacienteDTO pacienteDTO = pacienteService.obterPorId(id);
+        PacienteModel pacienteModel = pacienteService.obterPorId(id);
+        PacienteDTO pacienteDTO = modelMapper.map(pacienteModel, PacienteDTO.class);
         return ResponseEntity.status(HttpStatus.OK).body(pacienteDTO);
     }
 

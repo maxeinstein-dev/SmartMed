@@ -1,12 +1,15 @@
 package br.com.smartmed.consultas.rest.controller;
 
 import br.com.smartmed.consultas.model.MedicoModel;
+import br.com.smartmed.consultas.model.RecepcionistaModel;
 import br.com.smartmed.consultas.rest.dto.AgendaMedicaRequestDTO;
 import br.com.smartmed.consultas.rest.dto.AgendaMedicaResponseDTO;
 import br.com.smartmed.consultas.rest.dto.MedicoDTO;
+import br.com.smartmed.consultas.rest.dto.RecepcionistaDTO;
 import br.com.smartmed.consultas.service.ConsultaService;
 import br.com.smartmed.consultas.service.MedicoService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,8 @@ public class MedicoController {
 
     @Autowired
     private ConsultaService consultaService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * Lista todos os médicos.
@@ -37,9 +42,10 @@ public class MedicoController {
      * Busca médico por ID.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<MedicoDTO> buscarPorId(@PathVariable int id) {
-        MedicoDTO medico = medicoService.buscarPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(medico);
+    public ResponseEntity<MedicoDTO> buscarPorId(@PathVariable Integer id) {
+        MedicoModel medicoModel = medicoService.obterMedicoModelPorId(id);
+        MedicoDTO medicoDTO = modelMapper.map(medicoModel, MedicoDTO.class);
+        return ResponseEntity.status(HttpStatus.OK).body(medicoDTO);
     }
 
     /**

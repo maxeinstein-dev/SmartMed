@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgendamentoAutomaticoRequestDTO {
-    private Integer pacienteID;
-    private Integer medicoID;
-    private Integer especialidadeID;
+    private Integer pacienteId;
+    private Integer especialidadeId;
     private LocalDateTime dataHoraInicial;
     private Integer duracaoConsultaMinutos;
-    private Integer convenioID;
-    private Integer formaPagamentoID;
+    private Integer convenioId;
+    private Integer formaPagamentoId;
+    private Integer recepcionistaId;
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgendamentoAutomaticoResponseDTO {
-    private Long id;
+    private Integer id;
     private LocalDateTime dataHoraConsulta;
     private BigDecimal valor;
     private MedicoDTO medico;

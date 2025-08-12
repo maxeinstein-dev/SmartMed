@@ -19,15 +19,15 @@ public class ConsultaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "dataHoraConsulta", nullable = false)
     private LocalDateTime dataHoraConsulta;
 
     @Column(name = "status", length = 16, nullable = false)
     @NotNull(message = "O status não pode ser nulo.")
-    @NotBlank(message = "O status é obrigatório.")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ConsultaStatus status;
 
     @Column(name = "valor", nullable = false)
     @NotNull(message = "O valor não pode ser nulo.")

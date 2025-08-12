@@ -6,10 +6,13 @@ import br.com.smartmed.consultas.repository.ConsultaRepository;
 import br.com.smartmed.consultas.rest.dto.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -51,7 +54,7 @@ public class ConsultaService {
      * @throws ObjectNotFoundException Se a consulta não for encontrada.
      */
     @Transactional(readOnly = true)
-    public ConsultaDTO obterPorId(Long id) {
+    public ConsultaDTO obterPorId(Integer id) {
         ConsultaModel consulta = consultaRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Consulta com ID " + id + " não encontrada."));
         return modelMapper.map(consulta, ConsultaDTO.class);
@@ -214,82 +217,85 @@ public class ConsultaService {
      * @param request DTO com os critérios para agendamento automático.
      * @return DTO com os dados da consulta agendada.
      * @throws ObjectNotFoundException Se paciente, médico, especialidade, convênio ou forma de pagamento não forem encontrados.
-     * @throws BusinessRuleException Se não for possível encontrar um horário disponível ou regras de negócio forem violadas.
+     * @throws BusinessRuleException   Se não for possível encontrar um horário disponível ou regras de negócio forem violadas.
      */
     @Transactional
     public AgendamentoAutomaticoResponseDTO agendarAutomaticamente(AgendamentoAutomaticoRequestDTO request) {
-        // 1. Validar e buscar Paciente usando o serviço de Paciente
-        PacienteModel paciente = pacienteService.obterPacienteModelPorId(request.getPacienteID());
+        // 1. Validar e buscar entidades principais
+        PacienteModel paciente = pacienteService.obterPacienteModelPorId(request.getPacienteId());
+        RecepcionistaModel recepcionista = recepcionistaService.obterRecepcionistaPorId(request.getRecepcionistaId());
+        FormaPagamentoModel formaPagamento = formaPagamentoService.obterFormaPagamentoModelPorId(request.getFormaPagamentoId());
 
-        // 2. Buscar Médicos elegíveis (por ID ou Especialidade) usando o serviço de Médico
+        // 2. Lógica de busca e ordenação de médicos
         List<MedicoModel> medicosElegiveis;
-        if (request.getMedicoID() != null) {
-            MedicoModel medico = medicoService.buscarMedicoModelPorId(request.getMedicoID());
-            medicosElegiveis = List.of(medico);
-        } else if (request.getEspecialidadeID() != null) {
-            EspecialidadeModel especialidade = especialidadeService.obterEspecialidadeModelPorId(request.getEspecialidadeID());
+        if (request.getEspecialidadeId() != null) {
+            EspecialidadeModel especialidade = especialidadeService.obterEspecialidadeModelPorId(request.getEspecialidadeId());
             medicosElegiveis = medicoService.buscarMedicosModelPorEspecialidade(especialidade);
+
             if (medicosElegiveis.isEmpty()) {
-                throw new ObjectNotFoundException("Nenhum médico encontrado para a especialidade com ID " + request.getEspecialidadeID() + ".");
+                throw new ObjectNotFoundException("Nenhum médico encontrado para a especialidade com ID " + request.getEspecialidadeId() + ".");
             }
+
+            // Critério de ordenação: menor valor da consulta
+            //medicosElegiveis.sort(Comparator.comparingDouble(MedicoModel::getValorConsultaReferencia));
+
+            // Aqui, você pode adicionar a lógica de proximidade como um critério secundário, se desejar
+            // medicosElegiveis.sort(Comparator.comparingDouble(MedicoModel::getValorConsultaReferencia)
+            //                         .thenComparingDouble(medico -> distanciaService.calcularDistancia(paciente.getEndereco(), medico.getEndereco())));
+
         } else {
-            throw new BusinessRuleException("É necessário informar o ID do médico ou o ID da especialidade para agendamento automático.");
+            throw new BusinessRuleException("É necessário informar a especialidade para agendamento automático.");
         }
 
-        // 3. Buscar Recepcionista usando o serviço de Recepcionista
-        RecepcionistaModel recepcionista = recepcionistaService.obterRecepcionistaAtiva();
+        // 3. Validação de usuários ativos (Recepcionista e Médicos)
+        if (!recepcionista.isAtivo()) {
+            throw new BusinessRuleException("Recepcionista inativo. Não é possível agendar consultas.");
+        }
 
-        // 4. Buscar Forma de Pagamento usando o serviço de Forma de Pagamento
-        FormaPagamentoModel formaPagamento = formaPagamentoService.obterFormaPagamentoModelPorId(request.getFormaPagamentoID());
+        for (MedicoModel medico : medicosElegiveis) {
+            if (!medico.isAtivo()) {
+                throw new BusinessRuleException("Médico inativo. Não é possível agendar consultas para ele.");
+            }
+        }
 
-        // 5. Iterar pelos médicos e buscar o primeiro horário disponível
+        // 4. Iterar pelos médicos e buscar o primeiro horário disponível
         for (MedicoModel medico : medicosElegiveis) {
             LocalDateTime dataHoraAtual = request.getDataHoraInicial();
             LocalTime horaInicioExpediente = medico.getHoraInicioExpediente();
             LocalTime horaFimExpediente = medico.getHoraFimExpediente();
-            // Usar a duração da requisição se fornecida, senão a duração padrão do médico
             Integer duracaoConsulta = Optional.ofNullable(request.getDuracaoConsultaMinutos())
                     .orElse(medico.getDuracaoPadraoConsulta());
 
-            // Limite de busca: 3 meses a partir da dataHoraInicial
             LocalDateTime limiteBusca = request.getDataHoraInicial().plusMonths(3);
 
-            // Loop para encontrar um horário disponível
             while (dataHoraAtual.isBefore(limiteBusca)) {
-                // Pular fins de semana (sábado e domingo)
                 if (dataHoraAtual.getDayOfWeek() == DayOfWeek.SATURDAY || dataHoraAtual.getDayOfWeek() == DayOfWeek.SUNDAY) {
                     dataHoraAtual = dataHoraAtual.toLocalDate().plusDays(1).atTime(horaInicioExpediente);
                     continue;
                 }
 
-                // Ajustar a hora para o início do expediente do médico se o dia mudou ou se a hora atual é antes do expediente
                 if (dataHoraAtual.toLocalTime().isBefore(horaInicioExpediente)) {
-                    dataHoraAtual = dataHoraAtual.withHour(horaInicioExpediente.getHour()).withMinute(horaInicioExpediente.getMinute()).withSecond(0).withNano(0);
+                    dataHoraAtual = dataHoraAtual.withHour(horaInicioExpediente.getHour()).withMinute(horaInicioExpediente.getMinute());
                 }
 
-                // Verificar se o slot proposto termina dentro do expediente do médico
                 LocalDateTime fimDoSlot = dataHoraAtual.plusMinutes(duracaoConsulta);
-                // Apenas verifica se o fim do slot é estritamente APÓS o fim do expediente
                 if (fimDoSlot.toLocalTime().isAfter(horaFimExpediente)) {
                     dataHoraAtual = dataHoraAtual.toLocalDate().plusDays(1).atTime(horaInicioExpediente);
                     continue;
                 }
 
-                // Buscar consultas que potencialmente se sobrepõem no período
                 List<ConsultaModel> consultasPotenciaisConflito = consultaRepository.findConsultasByMedicoAndPeriod(
                         medico.getId(),
                         dataHoraAtual.minusMinutes(medico.getDuracaoPadraoConsulta()),
                         fimDoSlot.plusMinutes(medico.getDuracaoPadraoConsulta())
                 );
 
-                // Lógica de sobreposição em Java
                 boolean hasConflict = false;
                 for (ConsultaModel consultaExistente : consultasPotenciaisConflito) {
                     LocalDateTime inicioConsultaExistente = consultaExistente.getDataHoraConsulta();
                     Integer duracaoExistente = consultaExistente.getMedico() != null ? consultaExistente.getMedico().getDuracaoPadraoConsulta() : 30;
                     LocalDateTime fimConsultaExistente = inicioConsultaExistente.plusMinutes(duracaoExistente);
 
-                    // Condição de sobreposição: (slot_inicio < consulta_fim AND slot_fim > consulta_inicio)
                     if (dataHoraAtual.isBefore(fimConsultaExistente) && fimDoSlot.isAfter(inicioConsultaExistente)) {
                         hasConflict = true;
                         break;
@@ -298,26 +304,27 @@ public class ConsultaService {
 
                 if (!hasConflict) {
                     // Horário disponível encontrado!
+                    // 5. Lógica de criação e agendamento da consulta
                     ConsultaModel novaConsulta = new ConsultaModel();
                     novaConsulta.setDataHoraConsulta(dataHoraAtual);
-                    novaConsulta.setStatus("AGENDADA");
+                    novaConsulta.setStatus(ConsultaStatus.AGENDADA);
                     novaConsulta.setPaciente(paciente);
                     novaConsulta.setMedico(medico);
                     novaConsulta.setRecepcionista(recepcionista);
                     novaConsulta.setFormaPagamento(formaPagamento);
 
                     BigDecimal valorBase = BigDecimal.valueOf(medico.getValorConsultaReferencia());
-                    ConvenioModel convenio = null;
-                    if (request.getConvenioID() != null) {
-                        convenio = convenioService.obterConvenioModelPorId(request.getConvenioID());
+                    if (request.getConvenioId() != null) {
+                        ConvenioModel convenio = convenioService.obterConvenioModelPorId(request.getConvenioId());
                         novaConsulta.setConvenio(convenio);
-                        novaConsulta.setValor(BigDecimal.valueOf(valorBase.multiply(BigDecimal.valueOf(0.50)).doubleValue()));
+                        novaConsulta.setValor(valorBase.multiply(BigDecimal.valueOf(0.50)));
                     } else {
-                        novaConsulta.setValor(BigDecimal.valueOf(valorBase.doubleValue()));
+                        novaConsulta.setValor(valorBase);
                     }
 
                     ConsultaModel consultaAgendada = consultaRepository.save(novaConsulta);
 
+                    // 6. Construir e retornar o DTO de resposta
                     AgendamentoAutomaticoResponseDTO responseDTO = new AgendamentoAutomaticoResponseDTO();
                     responseDTO.setId(consultaAgendada.getId());
                     responseDTO.setDataHoraConsulta(consultaAgendada.getDataHoraConsulta());
@@ -334,13 +341,81 @@ public class ConsultaService {
         throw new BusinessRuleException("Não foi possível encontrar um horário disponível para agendamento com os critérios informados dentro do período de busca.");
     }
 
+
+    @Transactional
+    public CadastrarConsultaResponseDTO cadastrarConsulta(CadastrarConsultaRequestDTO request) {
+        // 1. Validar e buscar os envolvidos na consulta
+        PacienteModel paciente = pacienteService.obterPacienteModelPorId(request.getPacienteId());
+        RecepcionistaModel recepcionista = recepcionistaService.obterRecepcionistaPorId(request.getRecepcionistaId());
+        MedicoModel medico = medicoService.obterMedicoModelPorId(request.getMedicoId());
+
+        // 2. Aplicar as Regras de Negócio (Validação de Acesso)
+        if (!recepcionista.isAtivo()) {
+            throw new BusinessRuleException("Recepcionista inativo. Não é possível agendar consultas.");
+        }
+
+        if (!medico.isAtivo()) {
+            throw new BusinessRuleException("Médico inativo. Não é possível agendar consultas para ele.");
+        }
+
+        // 3. Obter dados auxiliares
+        FormaPagamentoModel formaPagamento = formaPagamentoService.obterFormaPagamentoModelPorId(request.getFormaPagamentoId());
+        ConvenioModel convenio = request.getConvenioId() != null ? convenioService.obterConvenioModelPorId(request.getConvenioId()) : null;
+
+        // 4. Lógica de Agendamento: Verificar conflito de horário
+        LocalDateTime inicioSlot = request.getDataHora();
+        Integer duracao = Optional.ofNullable(request.getDuracaoMinutos()).orElse(medico.getDuracaoPadraoConsulta());
+        LocalDateTime fimSlot = inicioSlot.plusMinutes(duracao);
+
+        boolean temConflito = consultaRepository.existsByMedicoAndPeriod(medico.getId(), inicioSlot, fimSlot);
+
+        if (temConflito) {
+            throw new BusinessRuleException("Já existe uma consulta agendada para este médico nesse horário.");
+        }
+
+        // 5. Criar e salvar a nova consulta
+        ConsultaModel novaConsulta = new ConsultaModel();
+        novaConsulta.setDataHoraConsulta(inicioSlot);
+        novaConsulta.setStatus(ConsultaStatus.AGENDADA);
+        novaConsulta.setPaciente(paciente);
+        novaConsulta.setMedico(medico);
+        novaConsulta.setRecepcionista(recepcionista);
+        novaConsulta.setFormaPagamento(formaPagamento);
+        novaConsulta.setConvenio(convenio);
+
+        // 6. Calcular valor da consulta
+        BigDecimal valorBase = BigDecimal.valueOf(medico.getValorConsultaReferencia());
+        if (convenio != null) {
+            novaConsulta.setValor(valorBase.multiply(BigDecimal.valueOf(0.50)));
+        } else {
+            novaConsulta.setValor(valorBase);
+        }
+
+        ConsultaModel consultaAgendada = consultaRepository.save(novaConsulta);
+
+        // 7. Construir e retornar o DTO de resposta
+        CadastrarConsultaResponseDTO responseDTO = new CadastrarConsultaResponseDTO();
+        responseDTO.setMensagem("Consulta agendada com sucesso");
+        responseDTO.setStatus(ConsultaStatus.AGENDADA);
+
+        CadastrarConsultaResponseDTO.DadosConsultaDTO dadosConsultaDTO = new CadastrarConsultaResponseDTO.DadosConsultaDTO();
+        dadosConsultaDTO.setId(consultaAgendada.getId());
+        dadosConsultaDTO.setDataHora(consultaAgendada.getDataHoraConsulta());
+        dadosConsultaDTO.setMedico(modelMapper.map(consultaAgendada.getMedico(), MedicoDTO.class));
+        dadosConsultaDTO.setPaciente(modelMapper.map(consultaAgendada.getPaciente(), PacienteDTO.class));
+        dadosConsultaDTO.setValor(consultaAgendada.getValor());
+
+        responseDTO.setDadosConsulta(dadosConsultaDTO);
+        return responseDTO;
+    }
+
     /**
      * Retorna o histórico detalhado de consultas de um paciente, com filtros opcionais.
      *
      * @param request DTO contendo os filtros para a consulta do histórico.
      * @return Lista de HistoricoConsultaResponseDTO.
      * @throws ObjectNotFoundException Se o paciente não for encontrado.
-     * @throws BusinessRuleException Se o paciente estiver inativo.
+     * @throws BusinessRuleException   Se o paciente estiver inativo.
      */
     @Transactional(readOnly = true)
     public List<HistoricoConsultaResponseDTO> obterHistoricoConsultas(HistoricoConsultaRequestDTO request) {
@@ -378,13 +453,33 @@ public class ConsultaService {
         }).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public Page<RankingMedicoDTO> obterRankingMedicosPorMes(int mes, int ano, Pageable pageable) {
+        return consultaRepository.findRankingMedicosPorMes(mes, ano, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ConsultaModel> buscarConsultasRealizadasNoPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim) {
+        if (dataInicio.isAfter(dataFim)) {
+            throw new BusinessRuleException("A data de início não pode ser posterior à data de fim.");
+        }
+
+        List<ConsultaModel> consultas = consultaRepository.findConsultasRealizadasByPeriodo(dataInicio, dataFim);
+
+        if (consultas.isEmpty()) {
+            throw new ObjectNotFoundException("Nenhuma consulta realizada encontrada no período especificado.");
+        }
+
+        return consultas;
+    }
+
     /**
      * Retorna a agenda de um médico para uma data específica, com horários disponíveis e ocupados.
      *
      * @param request DTO com o ID do médico e a data.
      * @return AgendaMedicoResponseDTO com os horários.
      * @throws ObjectNotFoundException Se o médico não for encontrado.
-     * @throws BusinessRuleException Se o médico estiver inativo.
+     * @throws BusinessRuleException   Se o médico estiver inativo.
      */
     @Transactional(readOnly = true)
     public AgendaMedicaResponseDTO obterAgendaMedico(AgendaMedicaRequestDTO request) {
@@ -465,7 +560,7 @@ public class ConsultaService {
      * @param cancelamentoDTO DTO com o ID da consulta e o motivo do cancelamento.
      * @return DTO da consulta cancelada.
      * @throws ObjectNotFoundException Se a consulta não for encontrada.
-     * @throws BusinessRuleException Se a consulta não puder ser cancelada (por status ou data).
+     * @throws BusinessRuleException   Se a consulta não puder ser cancelada (por status ou data).
      */
     @Transactional
     public ConsultaDTO cancelarConsulta(CancelamentoConsultaDTO cancelamentoDTO) {
@@ -473,7 +568,7 @@ public class ConsultaService {
                 .orElseThrow(() -> new ObjectNotFoundException("Consulta com ID " + cancelamentoDTO.getConsultaId() + " não encontrada."));
 
         // Regra de Negócio: Apenas consultas com status AGENDADA podem ser canceladas.
-        if (!"AGENDADA".equals(consulta.getStatus())) {
+        if (consulta.getStatus() != ConsultaStatus.AGENDADA) {
             throw new BusinessRuleException("A consulta com ID " + consulta.getId() + " não pode ser cancelada, pois seu status não é 'AGENDADA'.");
         }
 
@@ -482,12 +577,95 @@ public class ConsultaService {
         }
 
         // Atualiza o status e as observações
-        consulta.setStatus("CANCELADA");
+        consulta.setStatus(ConsultaStatus.CANCELADA);
         consulta.setObservacoes(cancelamentoDTO.getMotivo());
 
         // O valor será automaticamente atualizado para zero pelo método @PreUpdate na entidade ConsultaModel.
-
         ConsultaModel consultaCancelada = consultaRepository.save(consulta);
         return modelMapper.map(consultaCancelada, ConsultaDTO.class);
+    }
+
+    @Transactional
+    public ReagendarConsultaResponseDTO reagendarConsulta(ReagendarConsultaRequestDTO request) {
+        // 1. Encontrar a consulta original
+        ConsultaModel consultaOriginal = consultaRepository.findById(request.getConsultaId())
+                .orElseThrow(() -> new ObjectNotFoundException("Consulta com ID " + request.getConsultaId() + " não encontrada."));
+
+        // 2. Validações da consulta original
+        if (consultaOriginal.getStatus() != ConsultaStatus.AGENDADA) {
+            throw new BusinessRuleException("A consulta com ID " + consultaOriginal.getId() + " não pode ser reagendada, pois não está com o status 'AGENDADA'.");
+        }
+
+        if (consultaOriginal.getDataHoraConsulta().isBefore(LocalDateTime.now())) {
+            throw new BusinessRuleException("A consulta com ID " + consultaOriginal.getId() + " já foi realizada e não pode ser reagendada.");
+        }
+
+        // 3. Validação do novo horário e antecedência
+        if (request.getNovaDataHora().isBefore(LocalDateTime.now().plusHours(1))) {
+            throw new BusinessRuleException("O reagendamento só pode ser feito com pelo menos 1h de antecedência.");
+        }
+
+        // 4. Verificar se o novo horário está disponível
+        MedicoModel medico = consultaOriginal.getMedico();
+        Integer duracaoConsulta = medico.getDuracaoPadraoConsulta();
+        LocalDateTime inicioNovoSlot = request.getNovaDataHora();
+        LocalDateTime fimNovoSlot = inicioNovoSlot.plusMinutes(duracaoConsulta);
+
+        List<ConsultaModel> consultasConflito = consultaRepository.findConsultasByMedicoAndPeriod(
+                medico.getId(),
+                inicioNovoSlot,
+                fimNovoSlot
+        );
+
+        boolean temConflito = consultasConflito.stream()
+                .anyMatch(consultaExistente -> {
+                    if (consultaExistente.getId().equals(consultaOriginal.getId())) {
+                        return false;
+                    }
+                    LocalDateTime inicioExistente = consultaExistente.getDataHoraConsulta();
+                    LocalDateTime fimExistente = inicioExistente.plusMinutes(consultaExistente.getMedico().getDuracaoPadraoConsulta());
+                    return inicioNovoSlot.isBefore(fimExistente) && fimNovoSlot.isAfter(inicioExistente);
+                });
+
+        if (temConflito) {
+            throw new BusinessRuleException("O novo horário " + inicioNovoSlot.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + " já está ocupado para o médico " + medico.getNome() + ".");
+        }
+
+        // 5. Cancelar a consulta original
+        // Este é o método que você já tem, ajustado para receber o DTO
+        CancelamentoConsultaDTO cancelamentoDTO = new CancelamentoConsultaDTO();
+        cancelamentoDTO.setConsultaId(consultaOriginal.getId());
+        cancelamentoDTO.setMotivo("Reagendamento para o novo horário: " + request.getNovaDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + " - Motivo: " + request.getMotivo());
+        cancelarConsulta(cancelamentoDTO);
+
+        // 6. Criar e agendar a nova consulta (toda a lógica aqui dentro)
+        ConsultaModel novaConsulta = new ConsultaModel();
+        novaConsulta.setDataHoraConsulta(request.getNovaDataHora());
+        novaConsulta.setStatus(ConsultaStatus.AGENDADA);
+        novaConsulta.setObservacoes("Reagendamento da consulta original ID: " + consultaOriginal.getId() + ". Motivo: " + request.getMotivo());
+        novaConsulta.setPaciente(consultaOriginal.getPaciente());
+        novaConsulta.setMedico(medico);
+        novaConsulta.setRecepcionista(consultaOriginal.getRecepcionista());
+        novaConsulta.setFormaPagamento(consultaOriginal.getFormaPagamento());
+
+        // Lógica para valor da consulta
+        if (consultaOriginal.getConvenio() != null) {
+            ConvenioModel convenio = consultaOriginal.getConvenio();
+            novaConsulta.setConvenio(convenio);
+
+            // Converta a porcentagem de desconto para BigDecimal para o cálculo
+            BigDecimal porcentagemDesconto = convenio.getPorcentagemDesconto();
+            BigDecimal valorReferencia = BigDecimal.valueOf(medico.getValorConsultaReferencia());
+
+            BigDecimal valorComDesconto = valorReferencia
+                    .multiply(BigDecimal.ONE.subtract(porcentagemDesconto))
+                    .setScale(2, RoundingMode.HALF_UP); // Arredondamento para 2 casas decimais
+
+            novaConsulta.setValor(valorComDesconto);
+        }
+
+        ConsultaModel consultaSalva = consultaRepository.save(novaConsulta);
+
+        return new ReagendarConsultaResponseDTO("Consulta reagendada com sucesso.", consultaSalva.getDataHoraConsulta());
     }
 }

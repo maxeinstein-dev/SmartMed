@@ -4,15 +4,17 @@ import br.com.smartmed.consultas.exception.BusinessRuleException;
 import br.com.smartmed.consultas.exception.ObjectNotFoundException;
 import br.com.smartmed.consultas.exception.SQLException;
 import br.com.smartmed.consultas.model.ConsultaModel;
-import br.com.smartmed.consultas.repository.ConsultaRepository;
 import br.com.smartmed.consultas.rest.dto.EspecialidadeFrequenciaDTO;
 import br.com.smartmed.consultas.rest.dto.FaturamentoRequestDTO;
 import br.com.smartmed.consultas.rest.dto.FaturamentoResponseDTO;
+import br.com.smartmed.consultas.rest.dto.RankingMedicoDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 public class RelatorioService {
 
     @Autowired
-    private ConsultaRepository consultaRepository;
+    private ConsultaService consultaService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -44,7 +46,7 @@ public class RelatorioService {
             LocalDateTime dataInicio = request.getDataInicio().atStartOfDay();
             LocalDateTime dataFim = request.getDataFim().atTime(LocalTime.MAX);
 
-            List<ConsultaModel> consultas = consultaRepository.findConsultasRealizadasByPeriodo(dataInicio, dataFim);
+            List<ConsultaModel> consultas = consultaService.buscarConsultasRealizadasNoPeriodo(dataInicio, dataFim);
 
             if (consultas.isEmpty()) {
                 throw new ObjectNotFoundException("Nenhuma consulta realizada encontrada no período especificado.");
@@ -138,7 +140,7 @@ public class RelatorioService {
             LocalDateTime dataHoraInicio = request.getDataInicio().atStartOfDay();
             LocalDateTime dataHoraFim = request.getDataFim().atTime(LocalTime.MAX);
 
-            List<ConsultaModel> consultas = consultaRepository.findConsultasRealizadasByPeriodo(dataHoraInicio, dataHoraFim);
+            List<ConsultaModel> consultas = consultaService.buscarConsultasRealizadasNoPeriodo(dataHoraInicio, dataHoraFim);
 
             if (consultas.isEmpty()) {
                 throw new ObjectNotFoundException("Nenhuma consulta encontrada no período especificado.");
@@ -164,5 +166,9 @@ public class RelatorioService {
         } catch (SQLException e) {
             throw new SQLException("Erro! Não foi possível gerar o relatório. Falha na conexão com o banco de dados.");
         }
+    }
+
+    public Page<RankingMedicoDTO> gerarRankingMedicos(int mes, int ano, Pageable pageable) {
+        return consultaService.obterRankingMedicosPorMes(mes, ano, pageable);
     }
 }

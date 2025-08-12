@@ -1,5 +1,6 @@
 package br.com.smartmed.consultas.rest.dto;
 
+import br.com.smartmed.consultas.model.ConsultaStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,6 @@ public class HistoricoConsultaResponseDTO {
     private String medico; // Nome do médico
     private String especialidade; // Nome da especialidade
     private BigDecimal valor;
-    private String status;
+    private ConsultaStatus status;
     private String observacoes;
 }

@@ -6,6 +6,7 @@ import br.com.smartmed.consultas.rest.dto.RecepcionistaDTO;
 import br.com.smartmed.consultas.rest.dto.RecepcionistaFilterRequestDTO;
 import br.com.smartmed.consultas.service.RecepcionistaService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,8 @@ public class RecepcionistaController {
      */
     @Autowired
     private RecepcionistaService recepcionistaService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * Obtém uma recepcionista pelo ID.
@@ -32,8 +35,9 @@ public class RecepcionistaController {
      * @return recepcionistaDTO representando a recepcionista encontrada.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RecepcionistaDTO> obterPorId(@PathVariable int id) {
-        RecepcionistaDTO recepcionistaDTO = recepcionistaService.obterPorId(id);
+    public ResponseEntity<RecepcionistaDTO> obterPorId(@PathVariable Integer id) {
+        RecepcionistaModel recepcionistaModel = recepcionistaService.obterRecepcionistaPorId(id);
+        RecepcionistaDTO recepcionistaDTO = modelMapper.map(recepcionistaModel, RecepcionistaDTO.class);
         return ResponseEntity.status(HttpStatus.OK).body(recepcionistaDTO);
     }
 

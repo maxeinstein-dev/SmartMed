@@ -1,23 +1,23 @@
 package br.com.smartmed.consultas.rest.dto;
 
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO para o request de cancelamento de consulta.
- */
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CancelamentoConsultaDTO {
-
-    @NotNull(message = "O ID da consulta não pode ser nulo.")
+public class ReagendarConsultaRequestDTO {
+    @NotNull
     private Integer consultaId;
-
-    @NotNull(message = "O motivo do cancelamento não pode ser nulo.")
-    @NotBlank(message = "O motivo do cancelamento é obrigatório.")
+    @NotNull
+    @Future
+    private LocalDateTime novaDataHora;
+    @NotBlank
     private String motivo;
 }

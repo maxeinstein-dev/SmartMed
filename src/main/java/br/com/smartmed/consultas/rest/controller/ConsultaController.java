@@ -34,7 +34,7 @@ public class ConsultaController {
      * @return consultaDTO representando a consulta encontrada.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ConsultaDTO> obterPorId(@PathVariable Long id) {
+    public ResponseEntity<ConsultaDTO> obterPorId(@PathVariable Integer id) {
         ConsultaDTO consultaDTO = consultaService.obterPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(consultaDTO);
     }
@@ -89,16 +89,15 @@ public class ConsultaController {
         return ResponseEntity.noContent().build(); // Retorna 204 No Content
     }
 
-    /**
-     * Endpoint para agendar uma consulta automaticamente.
-     * Link: http://localhost:8080/api/consulta/agendar-automatico
-     *
-     * @param request DTO com os critérios para agendamento automático.
-     * @return ResponseEntity com os dados da consulta agendada.
-     */
     @PostMapping("/agendar-automatico")
     public ResponseEntity<AgendamentoAutomaticoResponseDTO> agendarAutomaticamente(@Valid @RequestBody AgendamentoAutomaticoRequestDTO request) {
         AgendamentoAutomaticoResponseDTO response = consultaService.agendarAutomaticamente(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/cadastrar")
+    public ResponseEntity<CadastrarConsultaResponseDTO> cadastrarConsulta(@Valid @RequestBody CadastrarConsultaRequestDTO request) {
+        CadastrarConsultaResponseDTO response = consultaService.cadastrarConsulta(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -131,5 +130,11 @@ public class ConsultaController {
                         "statusAtual", "CANCELADA"
                 )
         );
+    }
+
+    @PutMapping("/reagendar")
+    public ResponseEntity<ReagendarConsultaResponseDTO> reagendarConsulta(@Valid @RequestBody ReagendarConsultaRequestDTO request) {
+        ReagendarConsultaResponseDTO response = consultaService.reagendarConsulta(request);
+        return ResponseEntity.ok(response);
     }
 }

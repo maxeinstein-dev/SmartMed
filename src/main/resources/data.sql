@@ -1,7 +1,9 @@
 -- Inserir especialidades
 INSERT INTO especialidade (nome, descricao)
 VALUES ('Cardiologia', 'Especialidade médica que trata do coração'),
-       ('Dermatologia', 'Especialidade médica que trata da pele');
+       ('Dermatologia', 'Especialidade médica que trata da pele'),
+       ('Oftalmologia', 'Especialidade médica que trata dos olhos e da visão.'),
+       ('Pediatria', 'Especialidade médica que cuida da saúde de crianças e adolescentes.');
 
 -- Inserir formas de pagamento
 INSERT INTO formaPagamento (descricao)
@@ -67,15 +69,18 @@ VALUES
     (14, 'Guilherme Castro', '14141414141', '1993-01-21', '2024-04-02', '11914141414', 'guilherme.c@teste.com', TRUE),
     (15, 'Isabela Martins', '15151515151', '1986-08-09', '2024-05-30', '11915151515', 'isabela.m@teste.com', TRUE);
 
-
 -- Inserir médicos
 INSERT INTO medico (nome, crm, telefone, email, valorConsultaReferencia, ativo, especialidadeId,
                     duracaoPadraoConsulta, horaInicioExpediente, horaFimExpediente)
 VALUES ('Dr. Roberto Santos', '123456SP', '11966664444', 'roberto@teste.com', 300.00, TRUE, 1, 30, '08:00:00',
         '18:00:00'),
-       ('Dra. Ana Paula', '654321RJ', '11955553333', 'ana@teste.com', 350.00, TRUE, 2, 30, '08:00:00', '18:00:00');
-
-
+       ('Dra. Ana Paula', '654321RJ', '11955553333', 'ana@teste.com', 350.00, TRUE, 2, 30, '08:00:00', '18:00:00'),
+       ('Dr. Fernando Costa', '789012MG', '11944445555', 'fernando@teste.com', 250.00, TRUE, 3, 30, '09:00:00',
+        '17:00:00'),
+       ('Dra. Laura Mendes', '345678BA', '11933336666', 'laura@teste.com', 280.00, TRUE, 4, 30, '08:30:00',
+        '16:30:00'),
+       ('Dr. Lucas Ferreira', '210987RS', '11922227777', 'lucas@teste.com', 310.00, TRUE, 1, 30, '10:00:00',
+        '19:00:00');
 
 --  - Inserir consultas de julho e agosto de 2025.
 --
@@ -122,8 +127,6 @@ INSERT INTO consulta (dataHoraConsulta, status, valor, pacienteId, medicoId, for
 VALUES
     ('2025-07-18 10:00:00', 'REMARCADA', 350.00, 16, 2, 1, 14),
     ('2025-07-22 15:00:00', 'REMARCADA', 300.00, 17, 1, 2, 15);
-
-
 --
 -- Consultas de Agosto
 --
@@ -162,3 +165,17 @@ VALUES
     (103, '2025-09-10 10:00:00', 'AGENDADA', 300.00, 'Consulta agendada para cancelamento.', 3, 1, 2, NULL, 3),
     (104, '2025-10-01 11:00:00', 'AGENDADA', 350.00, 'Consulta futura para teste.', 4, 2, 1, NULL, 4),
     (105, '2025-10-15 16:00:00', 'AGENDADA', 90.00, 'Outra consulta futura com convênio.', 5, 1, 3, 2, 5);
+
+-- Consultas para teste de reagendamento (outubro e novembro de 2025)
+INSERT INTO consulta (id, dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId, convenioId, recepcionistaId)
+VALUES
+    (151, '2025-10-10 14:00:00', 'AGENDADA', 250.00, 'Consulta para reagendamento. Paciente Teste 4 com Dr. Fernando.', 4, 3, 2, NULL, 1),
+    (152, '2025-10-10 15:00:00', 'AGENDADA', 280.00, 'Consulta para teste de conflito. Paciente Teste 5 com Dra. Laura.', 5, 4, 1, NULL, 2),
+    (153, '2025-10-10 16:00:00', 'AGENDADA', 310.00, 'Outra consulta para teste de conflito. Paciente Teste 6 com Dr. Lucas.', 6, 5, 1, NULL, 3),
+    (154, '2025-11-05 10:30:00', 'AGENDADA', 140.00, 'Consulta para reagendamento com convênio. Paciente Teste 8 com Dra. Ana Paula.', 8, 2, 3, 3, 4),
+    (155, '2025-11-05 11:30:00', 'AGENDADA', 300.00, 'Consulta para teste de reagendamento para o mesmo médico. Paciente Teste 9 com Dr. Roberto.', 9, 1, 1, NULL, 5);
+
+-- Consulta que já passou (para testar a regra de negócio)
+INSERT INTO consulta (id, dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId, convenioId, recepcionistaId)
+VALUES
+    (156, '2025-08-01 10:00:00', 'REALIZADA', 300.00, 'Consulta passada que não pode ser reagendada.', 10, 1, 2, NULL, 6);

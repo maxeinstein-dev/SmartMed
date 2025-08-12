@@ -41,9 +41,8 @@ public class PacienteService {
      * @throws ObjectNotFoundException Se o paciente não for encontrado.
      */
     @Transactional(readOnly = true)
-    public PacienteDTO obterPorId(int id) {
-        PacienteModel paciente = pacienteRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Paciente com ID " + id + " não encontrado."));
-        return modelMapper.map(paciente, PacienteDTO.class);
+    public PacienteModel obterPorId(int id) {
+        return pacienteRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Paciente com ID " + id + " não encontrado."));
     }
 
     /**
