@@ -4,8 +4,8 @@ import br.com.smartmed.consultas.rest.dto.*;
 import br.com.smartmed.consultas.service.RelatorioService;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -20,11 +20,8 @@ import java.util.List;
 @RequestMapping("/api/relatorios")
 public class RelatorioController {
 
-    private final RelatorioService relatorioService;
-
-    public RelatorioController(RelatorioService relatorioService) {
-        this.relatorioService = relatorioService;
-    }
+    @Autowired
+    private RelatorioService relatorioService;
 
     @GetMapping("/faturamento")
     public ResponseEntity<FaturamentoResponseDTO> getFaturamento(
@@ -39,7 +36,6 @@ public class RelatorioController {
 
         return ResponseEntity.ok(response);
     }
-
 
     @PostMapping("/especialidades-frequentes")
     public ResponseEntity<List<EspecialidadeFrequenciaDTO>> listarEspecialidadesFrequentes(@Valid @RequestBody FaturamentoRequestDTO request) {

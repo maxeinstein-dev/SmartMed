@@ -48,6 +48,12 @@ public class RecepcionistaService {
     }
 
     @Transactional(readOnly = true)
+    public RecepcionistaModel obterRecepcionistaPorUsuarioId(Integer usuarioId) {
+        return recepcionistaRepository.findByUsuarioId(usuarioId)
+                .orElseThrow(() -> new ObjectNotFoundException("Dados de recepcionista não encontrados para o usuário com ID " + usuarioId));
+    }
+
+    @Transactional(readOnly = true)
     public RecepcionistaModel obterRecepcionistaAtiva() {
         return recepcionistaRepository.findFirstByAtivoTrue()
                 .orElseThrow(() -> new ObjectNotFoundException("Nenhuma recepcionista ativa encontrada para agendamento."));

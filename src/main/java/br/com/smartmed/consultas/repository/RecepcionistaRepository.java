@@ -51,6 +51,8 @@ public interface RecepcionistaRepository extends JpaRepository<RecepcionistaMode
      */
     Optional<RecepcionistaModel> findFirstByAtivoTrue();
 
+    Optional<RecepcionistaModel> findByUsuarioId(Integer usuarioId);
+
     /**
      * Busca recepcionistas com filtros de status e faixa de data de admissão, com paginação.
      * Os parâmetros são opcionais.

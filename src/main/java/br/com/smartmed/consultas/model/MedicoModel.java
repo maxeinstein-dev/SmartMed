@@ -61,4 +61,8 @@ public class MedicoModel {
 
     @Column(name = "duracaoPadraoConsulta", nullable = false)
     private Integer duracaoPadraoConsulta = 30; // em minutos
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    private UsuarioModel usuario;
 }

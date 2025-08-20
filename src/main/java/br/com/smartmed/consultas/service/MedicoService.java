@@ -44,6 +44,12 @@ public class MedicoService {
     }
 
     @Transactional(readOnly = true)
+    public MedicoModel obterMedicoPorUsuarioId(Integer usuarioId) {
+        return medicoRepository.findByUsuarioId(usuarioId)
+                .orElseThrow(() -> new ObjectNotFoundException("Dados de médico não encontrados para o usuário com ID " + usuarioId));
+    }
+
+    @Transactional(readOnly = true)
     public MedicoModel obterMedicoModelPorId(Integer id) {
         return medicoRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Médico com ID " + id + " não encontrado."));

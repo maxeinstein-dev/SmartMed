@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MedicoRepository extends JpaRepository<MedicoModel, Integer> {
@@ -31,4 +32,6 @@ public interface MedicoRepository extends JpaRepository<MedicoModel, Integer> {
      * @return Lista de médicos da especialidade.
      */
     List<MedicoModel> findByEspecialidade(EspecialidadeModel especialidade);
+
+    Optional<MedicoModel> findByUsuarioId(Integer usuarioId);
 }

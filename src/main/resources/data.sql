@@ -17,6 +17,33 @@ VALUES ('Unimed', '12345678000199', '11999998888', 'unimed@teste.com', TRUE, 0.5
        ('Amil', '98765432000199', '11988887777', 'amil@teste.com', TRUE, 0.70),
        ('Bradesco Saúde', '56789012000199', '11977776666', 'bradesco@teste.com', TRUE, 0.60);
 
+--
+-- INSERIR USUÁRIOS
+--
+-- Senha para todos os usuários é 'senha123'
+--
+INSERT INTO usuario (email, senha, perfil)
+VALUES ('carlos@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 1
+       ('ana.costa@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 2
+       ('pedro.s@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 3
+       ('sofia.l@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 4
+       ('lucas.p@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 5
+       ('mariana.o@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 6
+       ('felipe.s@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 7
+       ('julia.g@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 8
+       ('ricardo.n@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 9
+       ('gabriela.p@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 10
+       ('bruna.l@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 11
+       ('marcelo.r@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 12
+       ('carolina.f@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 13
+       ('guilherme.c@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 14
+       ('isabela.m@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 15
+       ('roberto@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'), -- ID 16
+       ('ana@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'), -- ID 17
+       ('fernando@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'), -- ID 18
+       ('laura@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'), -- ID 19
+       ('lucas@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'); -- ID 20
+
 -- Inserir pacientes (com o campo 'ativo')
 INSERT INTO paciente (nome, cpf, dataNascimento, telefone, email, ativo)
 VALUES ('João Silva', '12345678901', '1980-01-15', '11999991111', 'joao@teste.com', TRUE),
@@ -70,17 +97,46 @@ VALUES
     (15, 'Isabela Martins', '15151515151', '1986-08-09', '2024-05-30', '11915151515', 'isabela.m@teste.com', TRUE);
 
 -- Inserir médicos
-INSERT INTO medico (nome, crm, telefone, email, valorConsultaReferencia, ativo, especialidadeId,
+INSERT INTO medico (id, nome, crm, telefone, email, valorConsultaReferencia, ativo, especialidadeId,
                     duracaoPadraoConsulta, horaInicioExpediente, horaFimExpediente)
-VALUES ('Dr. Roberto Santos', '123456SP', '11966664444', 'roberto@teste.com', 300.00, TRUE, 1, 30, '08:00:00',
+VALUES (1, 'Dr. Roberto Santos', '123456SP', '11966664444', 'roberto@teste.com', 300.00, TRUE, 1, 30, '08:00:00',
         '18:00:00'),
-       ('Dra. Ana Paula', '654321RJ', '11955553333', 'ana@teste.com', 350.00, TRUE, 2, 30, '08:00:00', '18:00:00'),
-       ('Dr. Fernando Costa', '789012MG', '11944445555', 'fernando@teste.com', 250.00, TRUE, 3, 30, '09:00:00',
+       (2, 'Dra. Ana Paula', '654321RJ', '11955553333', 'ana@teste.com', 350.00, TRUE, 2, 30, '08:00:00', '18:00:00'),
+       (3, 'Dr. Fernando Costa', '789012MG', '11944445555', 'fernando@teste.com', 250.00, TRUE, 3, 30, '09:00:00',
         '17:00:00'),
-       ('Dra. Laura Mendes', '345678BA', '11933336666', 'laura@teste.com', 280.00, TRUE, 4, 30, '08:30:00',
+       (4, 'Dra. Laura Mendes', '345678BA', '11933336666', 'laura@teste.com', 280.00, TRUE, 4, 30, '08:30:00',
         '16:30:00'),
-       ('Dr. Lucas Ferreira', '210987RS', '11922227777', 'lucas@teste.com', 310.00, TRUE, 1, 30, '10:00:00',
+       (5, 'Dr. Lucas Ferreira', '210987RS', '11922227777', 'lucas@teste.com', 310.00, TRUE, 1, 30, '10:00:00',
         '19:00:00');
+
+--
+-- ATUALIZAR ENTIDADES COM O 'usuario_id'
+--
+-- O id de cada usuário está definido na ordem de inserção da tabela 'usuarios' acima.
+--
+-- Atualizando recepcionistas com o usuario_id (ids 1 a 15)
+UPDATE recepcionista SET usuario_id = 1 WHERE id = 1;
+UPDATE recepcionista SET usuario_id = 2 WHERE id = 2;
+UPDATE recepcionista SET usuario_id = 3 WHERE id = 3;
+UPDATE recepcionista SET usuario_id = 4 WHERE id = 4;
+UPDATE recepcionista SET usuario_id = 5 WHERE id = 5;
+UPDATE recepcionista SET usuario_id = 6 WHERE id = 6;
+UPDATE recepcionista SET usuario_id = 7 WHERE id = 7;
+UPDATE recepcionista SET usuario_id = 8 WHERE id = 8;
+UPDATE recepcionista SET usuario_id = 9 WHERE id = 9;
+UPDATE recepcionista SET usuario_id = 10 WHERE id = 10;
+UPDATE recepcionista SET usuario_id = 11 WHERE id = 11;
+UPDATE recepcionista SET usuario_id = 12 WHERE id = 12;
+UPDATE recepcionista SET usuario_id = 13 WHERE id = 13;
+UPDATE recepcionista SET usuario_id = 14 WHERE id = 14;
+UPDATE recepcionista SET usuario_id = 15 WHERE id = 15;
+
+-- Atualizando médicos com o usuario_id (ids 16 a 20)
+UPDATE medico SET usuario_id = 16 WHERE id = 1;
+UPDATE medico SET usuario_id = 17 WHERE id = 2;
+UPDATE medico SET usuario_id = 18 WHERE id = 3;
+UPDATE medico SET usuario_id = 19 WHERE id = 4;
+UPDATE medico SET usuario_id = 20 WHERE id = 5;
 
 --  - Inserir consultas de julho e agosto de 2025.
 --

@@ -58,4 +58,8 @@ public class RecepcionistaModel {
 
     @OneToMany(mappedBy = "recepcionista")
     private List<ConsultaModel> consultas;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    private UsuarioModel usuario;
 }
