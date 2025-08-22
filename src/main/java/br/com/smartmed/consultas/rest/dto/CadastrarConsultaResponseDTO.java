@@ -2,6 +2,7 @@ package br.com.smartmed.consultas.rest.dto;
 
 import br.com.smartmed.consultas.model.ConsultaStatus;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 

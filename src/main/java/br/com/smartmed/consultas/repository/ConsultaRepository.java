@@ -1,6 +1,7 @@
 package br.com.smartmed.consultas.repository;
 
 import br.com.smartmed.consultas.model.ConsultaModel;
+import br.com.smartmed.consultas.model.ConsultaStatus;
 import br.com.smartmed.consultas.rest.dto.RankingMedicoDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -68,7 +69,7 @@ public interface ConsultaRepository extends JpaRepository<ConsultaModel, Integer
             @Param("dataInicio") LocalDateTime dataInicio,
             @Param("dataFim") LocalDateTime dataFim,
             @Param("medicoId") Integer medicoId,
-            @Param("status") String status,
+            @Param("status") ConsultaStatus status,
             @Param("especialidadeId") Integer especialidadeId
     );
 
@@ -108,15 +109,16 @@ public interface ConsultaRepository extends JpaRepository<ConsultaModel, Integer
             @Param("fimSlot") LocalDateTime fimSlot
     );
 
-    @Query("SELECT new br.com.smartmed.consultas.rest.dto.RankingMedicoDTO(c.medico.nome, count(c) as quantidadeConsultas) " +
+    @Query("SELECT new br.com.smartmed.consultas.rest.dto.RankingMedicoDTO(c.medico.nome, COUNT(c)) " +
             "FROM ConsultaModel c " +
-            "WHERE c.status = 'REALIZADA' " +
-            "AND FUNCTION('MONTH', c.dataHoraConsulta) = :mes " +
+            "WHERE FUNCTION('MONTH', c.dataHoraConsulta) = :mes " +
             "AND FUNCTION('YEAR', c.dataHoraConsulta) = :ano " +
-            "GROUP BY c.medico.nome")
-    Page<RankingMedicoDTO> findRankingMedicosPorMes(
+            "AND c.status = :status " +
+            "GROUP BY c.medico.nome " +
+            "ORDER BY COUNT(c) DESC")
+    Page<RankingMedicoDTO> findRankingMedicos(
             @Param("mes") Integer mes,
             @Param("ano") Integer ano,
-            Pageable pageable
-    );
+            @Param("status") ConsultaStatus status,
+            Pageable pageable);
 }

@@ -3,6 +3,7 @@ package br.com.smartmed.consultas.service;
 import br.com.smartmed.consultas.exception.*;
 import br.com.smartmed.consultas.model.EspecialidadeModel;
 import br.com.smartmed.consultas.model.MedicoModel;
+import br.com.smartmed.consultas.model.UsuarioModel;
 import br.com.smartmed.consultas.repository.MedicoRepository;
 import br.com.smartmed.consultas.rest.dto.MedicoDTO;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -102,6 +104,18 @@ public class MedicoService {
     @Transactional(readOnly = true)
     public List<MedicoModel> buscarMedicosModelPorEspecialidade(EspecialidadeModel especialidade) {
         return medicoRepository.findByEspecialidade(especialidade);
+    }
+
+    @Transactional
+    public void vincularUsuario(UsuarioModel usuario) {
+        Optional<MedicoModel> medicoOptional = medicoRepository.findByEmail(usuario.getEmail());
+        if (medicoOptional.isPresent()) {
+            MedicoModel medico = medicoOptional.get();
+            medico.setUsuario(usuario);
+            medicoRepository.save(medico);
+        } else {
+            throw new RuntimeException("E-mail não corresponde a um médico existente.");
+        }
     }
 
     /**

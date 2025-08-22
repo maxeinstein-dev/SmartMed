@@ -1,7 +1,6 @@
 package br.com.smartmed.consultas.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -66,7 +65,7 @@ public class ConsultaModel {
             BigDecimal valorBase = BigDecimal.valueOf(medico.getValorConsultaReferencia());
 
             // A consulta foi cancelada, o valor é zero.
-            if ("CANCELADA".equals(this.status)) {
+            if (status == ConsultaStatus.CANCELADA) {
                 this.valor = BigDecimal.ZERO;
                 return;
             }
@@ -81,6 +80,4 @@ public class ConsultaModel {
             }
         }
     }
-
-
 }

@@ -23,36 +23,43 @@ VALUES ('Unimed', '12345678000199', '11999998888', 'unimed@teste.com', TRUE, 0.5
 -- Senha para todos os usuários é 'senha123'
 --
 INSERT INTO usuario (email, senha, perfil)
-VALUES ('carlos@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 1
+VALUES ('carlos@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'),    -- ID 1
        ('ana.costa@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 2
-       ('pedro.s@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 3
-       ('sofia.l@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 4
-       ('lucas.p@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 5
+       ('pedro.s@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'),   -- ID 3
+       ('sofia.l@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'),   -- ID 4
+       ('lucas.p@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'),   -- ID 5
        ('mariana.o@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 6
-       ('felipe.s@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 7
-       ('julia.g@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 8
+       ('felipe.s@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'),  -- ID 7
+       ('julia.g@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'),   -- ID 8
        ('ricardo.n@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 9
-       ('gabriela.p@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 10
-       ('bruna.l@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 11
-       ('marcelo.r@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 12
-       ('carolina.f@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 13
-       ('guilherme.c@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 14
-       ('isabela.m@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'), -- ID 15
-       ('roberto@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'), -- ID 16
-       ('ana@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'), -- ID 17
-       ('fernando@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'), -- ID 18
-       ('laura@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'), -- ID 19
-       ('lucas@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'); -- ID 20
+       ('gabriela.p@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6',
+        'RECEPCIONISTA'),                                                                                        -- ID 10
+       ('bruna.l@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'RECEPCIONISTA'),   -- ID 11
+       ('marcelo.r@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6',
+        'RECEPCIONISTA'),                                                                                        -- ID 12
+       ('carolina.f@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6',
+        'RECEPCIONISTA'),                                                                                        -- ID 13
+       ('guilherme.c@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6',
+        'RECEPCIONISTA'),                                                                                        -- ID 14
+       ('isabela.m@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6',
+        'RECEPCIONISTA'),                                                                                        -- ID 15
+       ('roberto@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'),          -- ID 16
+       ('ana@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'),              -- ID 17
+       ('fernando@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'),         -- ID 18
+       ('laura@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO');
+-- ID 19
+--        ('lucas@teste.com', '$2a$10$in/k5i4GRWktQ3zlw7T/b.d1kqa27o59Z9dcN3XGfve4RxLKRZtR6', 'MEDICO'); -- ID 20
+-- Comentado para que possa realizar a criação do usuário validando se ele de fato já foi cadastrado como médico
 
 -- Inserir pacientes (com o campo 'ativo')
 INSERT INTO paciente (nome, cpf, dataNascimento, telefone, email, ativo)
 VALUES ('João Silva', '12345678901', '1980-01-15', '11999991111', 'joao@teste.com', TRUE),
        ('Maria Souza', '98765432109', '1975-05-20', '11988882222', 'maria@teste.com', TRUE),
-       ('Paciente Inativo', '11122233344', '1995-10-25', '11911112222', 'inativo@teste.com', FALSE), -- Inativo
+       ('Paciente Inativo', '11122233344', '1995-10-25', '11911112222', 'inativo@teste.com', FALSE),     -- Inativo
        ('Paciente Teste 4', '11122233345', '1991-01-01', '11911112223', 'paciente4@teste.com', TRUE),
        ('Paciente Teste 5', '11122233346', '1992-02-02', '11911112224', 'paciente5@teste.com', TRUE),
        ('Paciente Teste 6', '11122233347', '1993-03-03', '11911112225', 'paciente6@teste.com', TRUE),
-       ('Paciente Teste 7', '11122233348', '1994-04-04', '11911112226', 'paciente7@teste.com', FALSE), -- Inativo
+       ('Paciente Teste 7', '11122233348', '1994-04-04', '11911112226', 'paciente7@teste.com', FALSE),   -- Inativo
        ('Paciente Teste 8', '11122233349', '1995-05-05', '11911112227', 'paciente8@teste.com', TRUE),
        ('Paciente Teste 9', '11122233350', '1996-06-06', '11911112228', 'paciente9@teste.com', TRUE),
        ('Paciente Teste 10', '11122233351', '1997-07-07', '11911112229', 'paciente10@teste.com', TRUE),
@@ -79,22 +86,23 @@ VALUES ('João Silva', '12345678901', '1980-01-15', '11999991111', 'joao@teste.c
 
 -- Inserir recepcionistas (dados para testes de paginação e filtro)
 INSERT INTO recepcionista (id, nome, cpf, dataNascimento, dataAdmissao, telefone, email, ativo)
-VALUES
-    (1, 'Carlos Andrade', '45678912301', '1990-02-10', '2020-01-15', '11977773333', 'carlos@teste.com', TRUE),
-    (2, 'Ana Costa', '11111111111', '1992-05-20', '2023-01-10', '11911111111', 'ana.costa@teste.com', TRUE),
-    (3, 'Pedro Santos', '22222222222', '1988-11-12', '2023-02-20', '11922222222', 'pedro.s@teste.com', TRUE),
-    (4, 'Sofia Lima', '33333333333', '1995-03-05', '2023-03-01', '11933333333', 'sofia.l@teste.com', TRUE),
-    (5, 'Lucas Pereira', '44444444444', '1991-07-30', '2023-04-15', '11944444444', 'lucas.p@teste.com', TRUE),
-    (6, 'Mariana Oliveira', '55555555555', '1994-08-18', '2023-05-22', '11955555555', 'mariana.o@teste.com', TRUE),
-    (7, 'Felipe Souza', '66666666666', '1987-04-01', '2023-06-05', '11966666666', 'felipe.s@teste.com', TRUE),
-    (8, 'Julia Gomes', '77777777777', '1993-09-23', '2023-07-11', '11977777777', 'julia.g@teste.com', TRUE),
-    (9, 'Ricardo Neves', '88888888888', '1985-06-07', '2023-08-08', '11988888888', 'ricardo.n@teste.com', TRUE),
-    (10, 'Gabriela Pinto', '99999999999', '1990-12-03', '2023-09-19', '11999999999', 'gabriela.p@teste.com', TRUE),
-    (11, 'Bruna Lopes', '10101010101', '1996-02-28', '2024-01-05', '11910101010', 'bruna.l@teste.com', TRUE),
-    (12, 'Marcelo Rocha', '12121212121', '1989-10-10', '2024-02-14', '11912121212', 'marcelo.r@teste.com', TRUE),
-    (13, 'Carolina Ferraz', '13131313131', '1998-04-04', '2024-03-20', '11913131313', 'carolina.f@teste.com', FALSE), -- Inativa
-    (14, 'Guilherme Castro', '14141414141', '1993-01-21', '2024-04-02', '11914141414', 'guilherme.c@teste.com', TRUE),
-    (15, 'Isabela Martins', '15151515151', '1986-08-09', '2024-05-30', '11915151515', 'isabela.m@teste.com', TRUE);
+VALUES (1, 'Carlos Andrade', '45678912301', '1990-02-10', '2020-01-15', '11977773333', 'carlos@teste.com', TRUE),
+       (2, 'Ana Costa', '11111111111', '1992-05-20', '2023-01-10', '11911111111', 'ana.costa@teste.com', TRUE),
+       (3, 'Pedro Santos', '22222222222', '1988-11-12', '2023-02-20', '11922222222', 'pedro.s@teste.com', TRUE),
+       (4, 'Sofia Lima', '33333333333', '1995-03-05', '2023-03-01', '11933333333', 'sofia.l@teste.com', TRUE),
+       (5, 'Lucas Pereira', '44444444444', '1991-07-30', '2023-04-15', '11944444444', 'lucas.p@teste.com', TRUE),
+       (6, 'Mariana Oliveira', '55555555555', '1994-08-18', '2023-05-22', '11955555555', 'mariana.o@teste.com', TRUE),
+       (7, 'Felipe Souza', '66666666666', '1987-04-01', '2023-06-05', '11966666666', 'felipe.s@teste.com', TRUE),
+       (8, 'Julia Gomes', '77777777777', '1993-09-23', '2023-07-11', '11977777777', 'julia.g@teste.com', TRUE),
+       (9, 'Ricardo Neves', '88888888888', '1985-06-07', '2023-08-08', '11988888888', 'ricardo.n@teste.com', TRUE),
+       (10, 'Gabriela Pinto', '99999999999', '1990-12-03', '2023-09-19', '11999999999', 'gabriela.p@teste.com', TRUE),
+       (11, 'Bruna Lopes', '10101010101', '1996-02-28', '2024-01-05', '11910101010', 'bruna.l@teste.com', TRUE),
+       (12, 'Marcelo Rocha', '12121212121', '1989-10-10', '2024-02-14', '11912121212', 'marcelo.r@teste.com', TRUE),
+       (13, 'Carolina Ferraz', '13131313131', '1998-04-04', '2024-03-20', '11913131313', 'carolina.f@teste.com',
+        FALSE), -- Inativa
+       (14, 'Guilherme Castro', '14141414141', '1993-01-21', '2024-04-02', '11914141414', 'guilherme.c@teste.com',
+        TRUE),
+       (15, 'Isabela Martins', '15151515151', '1986-08-09', '2024-05-30', '11915151515', 'isabela.m@teste.com', TRUE);
 
 -- Inserir médicos
 INSERT INTO medico (id, nome, crm, telefone, email, valorConsultaReferencia, ativo, especialidadeId,
@@ -115,28 +123,66 @@ VALUES (1, 'Dr. Roberto Santos', '123456SP', '11966664444', 'roberto@teste.com',
 -- O id de cada usuário está definido na ordem de inserção da tabela 'usuarios' acima.
 --
 -- Atualizando recepcionistas com o usuario_id (ids 1 a 15)
-UPDATE recepcionista SET usuario_id = 1 WHERE id = 1;
-UPDATE recepcionista SET usuario_id = 2 WHERE id = 2;
-UPDATE recepcionista SET usuario_id = 3 WHERE id = 3;
-UPDATE recepcionista SET usuario_id = 4 WHERE id = 4;
-UPDATE recepcionista SET usuario_id = 5 WHERE id = 5;
-UPDATE recepcionista SET usuario_id = 6 WHERE id = 6;
-UPDATE recepcionista SET usuario_id = 7 WHERE id = 7;
-UPDATE recepcionista SET usuario_id = 8 WHERE id = 8;
-UPDATE recepcionista SET usuario_id = 9 WHERE id = 9;
-UPDATE recepcionista SET usuario_id = 10 WHERE id = 10;
-UPDATE recepcionista SET usuario_id = 11 WHERE id = 11;
-UPDATE recepcionista SET usuario_id = 12 WHERE id = 12;
-UPDATE recepcionista SET usuario_id = 13 WHERE id = 13;
-UPDATE recepcionista SET usuario_id = 14 WHERE id = 14;
-UPDATE recepcionista SET usuario_id = 15 WHERE id = 15;
+UPDATE recepcionista
+SET usuario_id = 1
+WHERE id = 1;
+UPDATE recepcionista
+SET usuario_id = 2
+WHERE id = 2;
+UPDATE recepcionista
+SET usuario_id = 3
+WHERE id = 3;
+UPDATE recepcionista
+SET usuario_id = 4
+WHERE id = 4;
+UPDATE recepcionista
+SET usuario_id = 5
+WHERE id = 5;
+UPDATE recepcionista
+SET usuario_id = 6
+WHERE id = 6;
+UPDATE recepcionista
+SET usuario_id = 7
+WHERE id = 7;
+UPDATE recepcionista
+SET usuario_id = 8
+WHERE id = 8;
+UPDATE recepcionista
+SET usuario_id = 9
+WHERE id = 9;
+UPDATE recepcionista
+SET usuario_id = 10
+WHERE id = 10;
+UPDATE recepcionista
+SET usuario_id = 11
+WHERE id = 11;
+UPDATE recepcionista
+SET usuario_id = 12
+WHERE id = 12;
+UPDATE recepcionista
+SET usuario_id = 13
+WHERE id = 13;
+UPDATE recepcionista
+SET usuario_id = 14
+WHERE id = 14;
+UPDATE recepcionista
+SET usuario_id = 15
+WHERE id = 15;
 
 -- Atualizando médicos com o usuario_id (ids 16 a 20)
-UPDATE medico SET usuario_id = 16 WHERE id = 1;
-UPDATE medico SET usuario_id = 17 WHERE id = 2;
-UPDATE medico SET usuario_id = 18 WHERE id = 3;
-UPDATE medico SET usuario_id = 19 WHERE id = 4;
-UPDATE medico SET usuario_id = 20 WHERE id = 5;
+UPDATE medico
+SET usuario_id = 16
+WHERE id = 1;
+UPDATE medico
+SET usuario_id = 17
+WHERE id = 2;
+UPDATE medico
+SET usuario_id = 18
+WHERE id = 3;
+UPDATE medico
+SET usuario_id = 19
+WHERE id = 4;
+-- UPDATE medico SET usuario_id = 20 WHERE id = 5;
 
 --  - Inserir consultas de julho e agosto de 2025.
 --
@@ -159,79 +205,92 @@ UPDATE medico SET usuario_id = 20 WHERE id = 5;
 --
 
 -- Consultas REALIZADAS
-INSERT INTO consulta (dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId, convenioId, recepcionistaId)
-VALUES
-    ('2025-07-01 09:00:00', 'REALIZADA', 150.00, 'Consulta de rotina.', 4, 1, 3, 1, 2), -- Dr. Roberto, Unimed (R$ 300 * 0.5)
-    ('2025-07-01 14:00:00', 'REALIZADA', 350.00, NULL, 5, 2, 2, NULL, 3),          -- Dra. Ana, Cartão de Crédito
-    ('2025-07-02 10:30:00', 'REALIZADA', 120.00, 'Revisão anual.', 6, 1, 3, 3, 4), -- Dr. Roberto, Bradesco (R$ 300 * 0.4)
-    ('2025-07-05 15:00:00', 'REALIZADA', 105.00, NULL, 7, 2, 3, 2, 5),          -- Dra. Ana, Amil (R$ 350 * 0.3)
-    ('2025-07-10 11:00:00', 'REALIZADA', 300.00, 'Check-up.', 8, 1, 1, NULL, 6), -- Dr. Roberto, Dinheiro
-    ('2025-07-15 16:30:00', 'REALIZADA', 140.00, NULL, 9, 2, 3, 3, 7),          -- Dra. Ana, Bradesco (R$ 350 * 0.4)
-    ('2025-07-20 09:30:00', 'REALIZADA', 175.00, 'Retorno.', 10, 2, 3, 1, 8),      -- Dra. Ana, Unimed (R$ 350 * 0.5)
-    ('2025-07-25 10:00:00', 'REALIZADA', 90.00, NULL, 11, 1, 3, 2, 9),          -- Dr. Roberto, Amil (R$ 300 * 0.3)
-    ('2025-07-28 13:00:00', 'REALIZADA', 300.00, 'Sintomas gripais.', 12, 1, 2, NULL, 10); -- Dr. Roberto, Cartão de Crédito
+INSERT INTO consulta (dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId, convenioId,
+                      recepcionistaId)
+VALUES ('2025-07-01 09:00:00', 'REALIZADA', 150.00, 'Consulta de rotina.', 4, 1, 3, 1,
+        2),                                                                         -- Dr. Roberto, Unimed (R$ 300 * 0.5)
+       ('2025-07-01 14:00:00', 'REALIZADA', 350.00, NULL, 5, 2, 2, NULL, 3),        -- Dra. Ana, Cartão de Crédito
+       ('2025-07-02 10:30:00', 'REALIZADA', 120.00, 'Revisão anual.', 6, 1, 3, 3,
+        4),                                                                         -- Dr. Roberto, Bradesco (R$ 300 * 0.4)
+       ('2025-07-05 15:00:00', 'REALIZADA', 105.00, NULL, 7, 2, 3, 2, 5),           -- Dra. Ana, Amil (R$ 350 * 0.3)
+       ('2025-07-10 11:00:00', 'REALIZADA', 300.00, 'Check-up.', 8, 1, 1, NULL, 6), -- Dr. Roberto, Dinheiro
+       ('2025-07-15 16:30:00', 'REALIZADA', 140.00, NULL, 9, 2, 3, 3, 7),           -- Dra. Ana, Bradesco (R$ 350 * 0.4)
+       ('2025-07-20 09:30:00', 'REALIZADA', 175.00, 'Retorno.', 10, 2, 3, 1, 8),    -- Dra. Ana, Unimed (R$ 350 * 0.5)
+       ('2025-07-25 10:00:00', 'REALIZADA', 90.00, NULL, 11, 1, 3, 2, 9),           -- Dr. Roberto, Amil (R$ 300 * 0.3)
+       ('2025-07-28 13:00:00', 'REALIZADA', 300.00, 'Sintomas gripais.', 12, 1, 2, NULL, 10);
+-- Dr. Roberto, Cartão de Crédito
 
 -- Consultas CANCELADAS
 INSERT INTO consulta (dataHoraConsulta, status, valor, pacienteId, medicoId, formaPagamentoId, recepcionistaId)
-VALUES
-    ('2025-07-03 11:30:00', 'CANCELADA', 300.00, 13, 1, 1, 11),
-    ('2025-07-08 09:00:00', 'CANCELADA', 350.00, 14, 2, 2, 12),
-    ('2025-07-12 14:30:00', 'CANCELADA', 150.00, 15, 1, 3, 13); -- Com convênio
+VALUES ('2025-07-03 11:30:00', 'CANCELADA', 300.00, 13, 1, 1, 11),
+       ('2025-07-08 09:00:00', 'CANCELADA', 350.00, 14, 2, 2, 12),
+       ('2025-07-12 14:30:00', 'CANCELADA', 150.00, 15, 1, 3, 13);
+-- Com convênio
 
 -- Consultas REMARCADAS
 INSERT INTO consulta (dataHoraConsulta, status, valor, pacienteId, medicoId, formaPagamentoId, recepcionistaId)
-VALUES
-    ('2025-07-18 10:00:00', 'REMARCADA', 350.00, 16, 2, 1, 14),
-    ('2025-07-22 15:00:00', 'REMARCADA', 300.00, 17, 1, 2, 15);
+VALUES ('2025-07-18 10:00:00', 'REMARCADA', 350.00, 16, 2, 1, 14),
+       ('2025-07-22 15:00:00', 'REMARCADA', 300.00, 17, 1, 2, 15);
 --
 -- Consultas de Agosto
 --
 
 -- Consultas REALIZADAS
-INSERT INTO consulta (dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId, convenioId, recepcionistaId)
-VALUES
-    ('2025-08-05 08:30:00', 'REALIZADA', 175.00, 'Consulta de retorno.', 18, 2, 3, 1, 1), -- Dra. Ana, Unimed (R$ 350 * 0.5)
-    ('2025-08-08 11:00:00', 'REALIZADA', 300.00, 'Exame de rotina.', 19, 1, 2, NULL, 2), -- Dr. Roberto, Cartão
-    ('2025-08-10 13:00:00', 'REALIZADA', 105.00, NULL, 20, 2, 3, 2, 3),          -- Dra. Ana, Amil (R$ 350 * 0.3)
-    ('2025-08-12 16:00:00', 'REALIZADA', 120.00, 'Revisão de tratamento.', 21, 1, 3, 3, 4), -- Dr. Roberto, Bradesco (R$ 300 * 0.4)
-    ('2025-08-15 10:00:00', 'REALIZADA', 350.00, NULL, 22, 2, 1, NULL, 5),          -- Dra. Ana, Dinheiro
-    ('2025-08-18 09:30:00', 'REALIZADA', 150.00, NULL, 23, 1, 3, 1, 6),          -- Dr. Roberto, Unimed (R$ 300 * 0.5)
-    ('2025-08-20 14:00:00', 'REALIZADA', 90.00, 'Primeira consulta.', 24, 1, 3, 2, 7), -- Dr. Roberto, Amil (R$ 300 * 0.3)
-    ('2025-08-22 15:30:00', 'REALIZADA', 140.00, NULL, 25, 2, 3, 3, 8),          -- Dra. Ana, Bradesco (R$ 350 * 0.4)
-    ('2025-08-25 11:00:00', 'REALIZADA', 300.00, NULL, 26, 1, 1, NULL, 9);          -- Dr. Roberto, Dinheiro
+INSERT INTO consulta (dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId, convenioId,
+                      recepcionistaId)
+VALUES ('2025-08-05 08:30:00', 'REALIZADA', 175.00, 'Consulta de retorno.', 18, 2, 3, 1,
+        1),                                                                                 -- Dra. Ana, Unimed (R$ 350 * 0.5)
+       ('2025-08-08 11:00:00', 'REALIZADA', 300.00, 'Exame de rotina.', 19, 1, 2, NULL, 2), -- Dr. Roberto, Cartão
+       ('2025-08-10 13:00:00', 'REALIZADA', 105.00, NULL, 20, 2, 3, 2, 3),                  -- Dra. Ana, Amil (R$ 350 * 0.3)
+       ('2025-08-12 16:00:00', 'REALIZADA', 120.00, 'Revisão de tratamento.', 21, 1, 3, 3,
+        4),                                                                                 -- Dr. Roberto, Bradesco (R$ 300 * 0.4)
+       ('2025-08-15 10:00:00', 'REALIZADA', 350.00, NULL, 22, 2, 1, NULL, 5),               -- Dra. Ana, Dinheiro
+       ('2025-08-18 09:30:00', 'REALIZADA', 150.00, NULL, 23, 1, 3, 1, 6),                  -- Dr. Roberto, Unimed (R$ 300 * 0.5)
+       ('2025-08-20 14:00:00', 'REALIZADA', 90.00, 'Primeira consulta.', 24, 1, 3, 2,
+        7),                                                                                 -- Dr. Roberto, Amil (R$ 300 * 0.3)
+       ('2025-08-22 15:30:00', 'REALIZADA', 140.00, NULL, 25, 2, 3, 3, 8),                  -- Dra. Ana, Bradesco (R$ 350 * 0.4)
+       ('2025-08-25 11:00:00', 'REALIZADA', 300.00, NULL, 26, 1, 1, NULL, 9);
+-- Dr. Roberto, Dinheiro
 
 -- Consultas CANCELADAS
 INSERT INTO consulta (dataHoraConsulta, status, valor, pacienteId, medicoId, formaPagamentoId, recepcionistaId)
-VALUES
-    ('2025-08-07 10:00:00', 'CANCELADA', 350.00, 27, 2, 1, 10),
-    ('2025-08-11 12:00:00', 'CANCELADA', 300.00, 28, 1, 2, 11),
-    ('2025-08-16 15:00:00', 'CANCELADA', 175.00, 29, 2, 3, 12); -- Com convênio
+VALUES ('2025-08-07 10:00:00', 'CANCELADA', 350.00, 27, 2, 1, 10),
+       ('2025-08-11 12:00:00', 'CANCELADA', 300.00, 28, 1, 2, 11),
+       ('2025-08-16 15:00:00', 'CANCELADA', 175.00, 29, 2, 3, 12);
+-- Com convênio
 
 -- Consultas REMARCADAS
 INSERT INTO consulta (dataHoraConsulta, status, valor, pacienteId, medicoId, formaPagamentoId, recepcionistaId)
-VALUES
-    ('2025-08-09 14:00:00', 'REMARCADA', 300.00, 30, 1, 2, 13),
-    ('2025-08-21 10:00:00', 'REMARCADA', 350.00, 4, 2, 1, 14);
+VALUES ('2025-08-09 14:00:00', 'REMARCADA', 300.00, 30, 1, 2, 13),
+       ('2025-08-21 10:00:00', 'REMARCADA', 350.00, 4, 2, 1, 14);
 
 -- Novas consultas AGENDADAS para teste de cancelamento (setembro e outubro de 2025)
-INSERT INTO consulta (id, dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId, convenioId, recepcionistaId)
-VALUES
-    (101, '2025-09-01 09:00:00', 'AGENDADA', 300.00, 'Consulta agendada para cancelamento.', 1, 1, 1, NULL, 1),
-    (102, '2025-09-05 14:30:00', 'AGENDADA', 175.00, 'Consulta com convênio, agendada para cancelamento.', 2, 2, 3, 1, 2),
-    (103, '2025-09-10 10:00:00', 'AGENDADA', 300.00, 'Consulta agendada para cancelamento.', 3, 1, 2, NULL, 3),
-    (104, '2025-10-01 11:00:00', 'AGENDADA', 350.00, 'Consulta futura para teste.', 4, 2, 1, NULL, 4),
-    (105, '2025-10-15 16:00:00', 'AGENDADA', 90.00, 'Outra consulta futura com convênio.', 5, 1, 3, 2, 5);
+INSERT INTO consulta (id, dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId,
+                      convenioId, recepcionistaId)
+VALUES (101, '2025-09-01 09:00:00', 'AGENDADA', 300.00, 'Consulta agendada para cancelamento.', 1, 1, 1, NULL, 1),
+       (102, '2025-09-05 14:30:00', 'AGENDADA', 175.00, 'Consulta com convênio, agendada para cancelamento.', 2, 2, 3,
+        1, 2),
+       (103, '2025-09-10 10:00:00', 'AGENDADA', 300.00, 'Consulta agendada para cancelamento.', 3, 1, 2, NULL, 3),
+       (104, '2025-10-01 11:00:00', 'AGENDADA', 350.00, 'Consulta futura para teste.', 4, 2, 1, NULL, 4),
+       (105, '2025-10-15 16:00:00', 'AGENDADA', 90.00, 'Outra consulta futura com convênio.', 5, 1, 3, 2, 5);
 
 -- Consultas para teste de reagendamento (outubro e novembro de 2025)
-INSERT INTO consulta (id, dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId, convenioId, recepcionistaId)
-VALUES
-    (151, '2025-10-10 14:00:00', 'AGENDADA', 250.00, 'Consulta para reagendamento. Paciente Teste 4 com Dr. Fernando.', 4, 3, 2, NULL, 1),
-    (152, '2025-10-10 15:00:00', 'AGENDADA', 280.00, 'Consulta para teste de conflito. Paciente Teste 5 com Dra. Laura.', 5, 4, 1, NULL, 2),
-    (153, '2025-10-10 16:00:00', 'AGENDADA', 310.00, 'Outra consulta para teste de conflito. Paciente Teste 6 com Dr. Lucas.', 6, 5, 1, NULL, 3),
-    (154, '2025-11-05 10:30:00', 'AGENDADA', 140.00, 'Consulta para reagendamento com convênio. Paciente Teste 8 com Dra. Ana Paula.', 8, 2, 3, 3, 4),
-    (155, '2025-11-05 11:30:00', 'AGENDADA', 300.00, 'Consulta para teste de reagendamento para o mesmo médico. Paciente Teste 9 com Dr. Roberto.', 9, 1, 1, NULL, 5);
+INSERT INTO consulta (id, dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId,
+                      convenioId, recepcionistaId)
+VALUES (151, '2025-10-10 14:00:00', 'AGENDADA', 250.00,
+        'Consulta para reagendamento. Paciente Teste 4 com Dr. Fernando.', 4, 3, 2, NULL, 1),
+       (152, '2025-10-10 15:00:00', 'AGENDADA', 280.00,
+        'Consulta para teste de conflito. Paciente Teste 5 com Dra. Laura.', 5, 4, 1, NULL, 2),
+       (153, '2025-10-10 16:00:00', 'AGENDADA', 310.00,
+        'Outra consulta para teste de conflito. Paciente Teste 6 com Dr. Lucas.', 6, 5, 1, NULL, 3),
+       (154, '2025-11-05 10:30:00', 'AGENDADA', 140.00,
+        'Consulta para reagendamento com convênio. Paciente Teste 8 com Dra. Ana Paula.', 8, 2, 3, 3, 4),
+       (155, '2025-11-05 11:30:00', 'AGENDADA', 300.00,
+        'Consulta para teste de reagendamento para o mesmo médico. Paciente Teste 9 com Dr. Roberto.', 9, 1, 1, NULL,
+        5);
 
 -- Consulta que já passou (para testar a regra de negócio)
-INSERT INTO consulta (id, dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId, convenioId, recepcionistaId)
-VALUES
-    (156, '2025-08-01 10:00:00', 'REALIZADA', 300.00, 'Consulta passada que não pode ser reagendada.', 10, 1, 2, NULL, 6);
+INSERT INTO consulta (id, dataHoraConsulta, status, valor, observacoes, pacienteId, medicoId, formaPagamentoId,
+                      convenioId, recepcionistaId)
+VALUES (156, '2025-08-01 10:00:00', 'REALIZADA', 300.00, 'Consulta passada que não pode ser reagendada.', 10, 1, 2,
+        NULL, 6);

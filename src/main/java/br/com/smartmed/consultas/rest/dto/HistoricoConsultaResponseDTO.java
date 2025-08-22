@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class HistoricoConsultaResponseDTO {
     private LocalDateTime dataHora;
-    private String medico; // Nome do médico
-    private String especialidade; // Nome da especialidade
+    private String medico;
+    private String especialidade;
     private BigDecimal valor;
     private ConsultaStatus status;
     private String observacoes;

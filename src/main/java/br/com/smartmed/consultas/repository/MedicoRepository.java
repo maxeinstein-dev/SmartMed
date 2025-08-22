@@ -28,10 +28,13 @@ public interface MedicoRepository extends JpaRepository<MedicoModel, Integer> {
 
     /**
      * Busca médicos por especialidade.
+     *
      * @param especialidade Especialidade a ser filtrada.
      * @return Lista de médicos da especialidade.
      */
     List<MedicoModel> findByEspecialidade(EspecialidadeModel especialidade);
+
+    Optional<MedicoModel> findByEmail(String email);
 
     Optional<MedicoModel> findByUsuarioId(Integer usuarioId);
 }

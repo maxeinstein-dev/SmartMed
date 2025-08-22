@@ -1,11 +1,11 @@
 package br.com.smartmed.consultas.rest.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AgendaMedicaRequestDTO {
     @NotNull(message = "O ID do médico é obrigatório.")
-    private Integer medicoID;
+    private Integer medicoId;
 
     @NotNull(message = "A data é obrigatória.")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

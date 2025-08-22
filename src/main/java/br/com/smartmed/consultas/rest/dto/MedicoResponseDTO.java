@@ -1,6 +1,5 @@
 package br.com.smartmed.consultas.rest.dto;
 
-import br.com.smartmed.consultas.model.EspecialidadeModel;
 import br.com.smartmed.consultas.model.MedicoModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

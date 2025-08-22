@@ -1,14 +1,10 @@
 package br.com.smartmed.consultas.rest.controller;
 
 import br.com.smartmed.consultas.rest.dto.*;
+import br.com.smartmed.consultas.service.ConsultaService;
 import br.com.smartmed.consultas.service.RelatorioService;
 import jakarta.validation.Valid;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +18,8 @@ public class RelatorioController {
 
     @Autowired
     private RelatorioService relatorioService;
+    @Autowired
+    private ConsultaService consultaService;
 
     @GetMapping("/faturamento")
     public ResponseEntity<FaturamentoResponseDTO> getFaturamento(
@@ -44,11 +42,8 @@ public class RelatorioController {
     }
 
     @PostMapping("/medicos-mais-ativos")
-    public ResponseEntity<Page<RankingMedicoDTO>> getRankingMedicosMaisAtivos(
-            @RequestBody @Valid RelatorioMedicoRequestDTO request,
-            @ParameterObject @PageableDefault(size = 10, sort = "quantidadeConsultas", direction = Sort.Direction.DESC) Pageable pageable) {
-
-        Page<RankingMedicoDTO> ranking = relatorioService.gerarRankingMedicos(request.getMes(), request.getAno(), pageable);
+    public ResponseEntity<PageResponseDTO<RankingMedicoDTO>> gerarRankingMedicos(@RequestBody @Valid RankingMedicoRequestDTO request) {
+        PageResponseDTO<RankingMedicoDTO> ranking = consultaService.gerarRankingMedicos(request);
         return ResponseEntity.ok(ranking);
     }
 }

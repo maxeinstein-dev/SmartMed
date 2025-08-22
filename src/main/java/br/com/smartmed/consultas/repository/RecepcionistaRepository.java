@@ -47,9 +47,12 @@ public interface RecepcionistaRepository extends JpaRepository<RecepcionistaMode
 
     /**
      * Busca a primeira recepcionista ativa.
+     *
      * @return Optional contendo a recepcionista ativa, se encontrada.
      */
     Optional<RecepcionistaModel> findFirstByAtivoTrue();
+
+    Optional<RecepcionistaModel> findByEmail(String email);
 
     Optional<RecepcionistaModel> findByUsuarioId(Integer usuarioId);
 
@@ -57,10 +60,10 @@ public interface RecepcionistaRepository extends JpaRepository<RecepcionistaMode
      * Busca recepcionistas com filtros de status e faixa de data de admissão, com paginação.
      * Os parâmetros são opcionais.
      *
-     * @param status      Status da recepcionista ("ATIVO" ou "INATIVO"). Pode ser nulo.
-     * @param dataInicio  Data de início da faixa de admissão. Pode ser nulo.
-     * @param dataFim     Data de fim da faixa de admissão. Pode ser nulo.
-     * @param pageable    Objeto de paginação.
+     * @param status     Status da recepcionista ("ATIVO" ou "INATIVO"). Pode ser nulo.
+     * @param dataInicio Data de início da faixa de admissão. Pode ser nulo.
+     * @param dataFim    Data de fim da faixa de admissão. Pode ser nulo.
+     * @param pageable   Objeto de paginação.
      * @return Uma página de objetos RecepcionistaModel que correspondem aos critérios.
      */
     @Query("SELECT r FROM RecepcionistaModel r WHERE " +

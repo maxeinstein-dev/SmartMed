@@ -1,5 +1,6 @@
 package br.com.smartmed.consultas.rest.dto;
 
+import br.com.smartmed.consultas.model.ConsultaStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HistoricoConsultaRequestDTO {
-    private Integer pacienteID;
+    private Integer pacienteId;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataInicio;
@@ -19,7 +20,7 @@ public class HistoricoConsultaRequestDTO {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataFim;
 
-    private Integer medicoID;
-    private String status;
-    private Integer especialidadeID;
+    private Integer medicoId;
+    private ConsultaStatus status;
+    private Integer especialidadeId;
 }

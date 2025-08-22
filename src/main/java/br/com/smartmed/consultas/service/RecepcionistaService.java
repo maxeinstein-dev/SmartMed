@@ -2,6 +2,7 @@ package br.com.smartmed.consultas.service;
 
 import br.com.smartmed.consultas.exception.*;
 import br.com.smartmed.consultas.model.RecepcionistaModel;
+import br.com.smartmed.consultas.model.UsuarioModel;
 import br.com.smartmed.consultas.repository.RecepcionistaRepository;
 import br.com.smartmed.consultas.rest.dto.PageResponseDTO;
 import br.com.smartmed.consultas.rest.dto.RecepcionistaDTO;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -96,6 +98,18 @@ public class RecepcionistaService {
             throw new ObjectNotFoundException("Nenhuma recepcionista encontrado com o CPF: " + cpf);
         }
         return modelMapper.map(recepcionista, RecepcionistaDTO.class);
+    }
+
+    @Transactional
+    public void vincularUsuario(UsuarioModel usuario) {
+        Optional<RecepcionistaModel> recepcionistaOptional = recepcionistaRepository.findByEmail(usuario.getEmail());
+        if (recepcionistaOptional.isPresent()) {
+            RecepcionistaModel recepcionista = recepcionistaOptional.get();
+            recepcionista.setUsuario(usuario);
+            recepcionistaRepository.save(recepcionista);
+        } else {
+            throw new RuntimeException("E-mail não corresponde a uma recepcionista existente.");
+        }
     }
 
     /**

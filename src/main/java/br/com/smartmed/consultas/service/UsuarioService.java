@@ -40,6 +40,19 @@ public class UsuarioService {
         usuario.setPerfil(request.getPerfil());
         usuarioRepository.save(usuario);
 
+        // Delega a responsabilidade de vinculação para os serviços
+        switch (usuario.getPerfil()) {
+            case MEDICO:
+                medicoService.vincularUsuario(usuario);
+                break;
+            case RECEPCIONISTA:
+                recepcionistaService.vincularUsuario(usuario);
+                break;
+            default:
+                // Nenhum vínculo necessário para outros perfis (ex: PACIENTE)
+                break;
+        }
+
         CadastroUsuarioResponseDTO response = new CadastroUsuarioResponseDTO();
         response.setMensagem("Usuário cadastrado com sucesso");
         response.setUsuarioID(usuario.getId());

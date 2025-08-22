@@ -7,14 +7,10 @@ import br.com.smartmed.consultas.model.ConsultaModel;
 import br.com.smartmed.consultas.rest.dto.EspecialidadeFrequenciaDTO;
 import br.com.smartmed.consultas.rest.dto.FaturamentoRequestDTO;
 import br.com.smartmed.consultas.rest.dto.FaturamentoResponseDTO;
-import br.com.smartmed.consultas.rest.dto.RankingMedicoDTO;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -31,9 +27,6 @@ public class RelatorioService {
 
     @Autowired
     private ConsultaService consultaService;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
     public FaturamentoResponseDTO gerarRelatorioFaturamento(FaturamentoRequestDTO request) {
@@ -54,7 +47,8 @@ public class RelatorioService {
 
             // Calcula totais
             BigDecimal totalGeral = calcularTotalGeral(consultas);
-            List<FaturamentoResponseDTO.FormaPagamentoResumoDTO> porFormaPagamento = calcularPorFormaPagamento(consultas);
+            List<FaturamentoResponseDTO.FormaPagamentoResumoDTO> porFormaPagamento = calcularPorFormaPagamento(
+                    consultas);
             List<FaturamentoResponseDTO.ConvenioResumoDTO> porConvenio = calcularPorConvenio(consultas);
 
             // Monta resposta
@@ -80,7 +74,8 @@ public class RelatorioService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private List<FaturamentoResponseDTO.FormaPagamentoResumoDTO> calcularPorFormaPagamento(List<ConsultaModel> consultas) {
+    private List<FaturamentoResponseDTO.FormaPagamentoResumoDTO> calcularPorFormaPagamento(
+            List<ConsultaModel> consultas) {
         Map<String, BigDecimal> porFormaPagamento = consultas.stream()
                 .filter(c -> c.getFormaPagamento() != null)
                 .collect(Collectors.groupingBy(
@@ -88,9 +83,7 @@ public class RelatorioService {
                         Collectors.reducing(
                                 BigDecimal.ZERO,
                                 ConsultaModel::getValor,
-                                BigDecimal::add
-                        )
-                ));
+                                BigDecimal::add)));
 
         return porFormaPagamento.entrySet().stream()
                 .map(entry -> {
@@ -110,9 +103,7 @@ public class RelatorioService {
                         Collectors.reducing(
                                 BigDecimal.ZERO,
                                 ConsultaModel::getValor,
-                                BigDecimal::add
-                        )
-                ));
+                                BigDecimal::add)));
 
         return porConvenio.entrySet().stream()
                 .map(entry -> {
@@ -140,7 +131,8 @@ public class RelatorioService {
             LocalDateTime dataHoraInicio = request.getDataInicio().atStartOfDay();
             LocalDateTime dataHoraFim = request.getDataFim().atTime(LocalTime.MAX);
 
-            List<ConsultaModel> consultas = consultaService.buscarConsultasRealizadasNoPeriodo(dataHoraInicio, dataHoraFim);
+            List<ConsultaModel> consultas = consultaService.buscarConsultasRealizadasNoPeriodo(dataHoraInicio,
+                    dataHoraFim);
 
             if (consultas.isEmpty()) {
                 throw new ObjectNotFoundException("Nenhuma consulta encontrada no período especificado.");
@@ -151,8 +143,7 @@ public class RelatorioService {
                     .filter(c -> c.getMedico() != null && c.getMedico().getEspecialidade() != null)
                     .collect(Collectors.groupingBy(
                             c -> c.getMedico().getEspecialidade().getNome(),
-                            Collectors.counting()
-                    ));
+                            Collectors.counting()));
 
             // Mapeia o resultado para o DTO e ordena por quantidade de forma decrescente.
             return contagemPorEspecialidade.entrySet().stream()
@@ -166,9 +157,5 @@ public class RelatorioService {
         } catch (SQLException e) {
             throw new SQLException("Erro! Não foi possível gerar o relatório. Falha na conexão com o banco de dados.");
         }
-    }
-
-    public Page<RankingMedicoDTO> gerarRankingMedicos(int mes, int ano, Pageable pageable) {
-        return consultaService.obterRankingMedicosPorMes(mes, ano, pageable);
     }
 }
