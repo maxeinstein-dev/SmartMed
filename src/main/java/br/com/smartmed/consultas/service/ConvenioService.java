@@ -2,6 +2,7 @@ package br.com.smartmed.consultas.service;
 
 import br.com.smartmed.consultas.exception.*;
 import br.com.smartmed.consultas.model.ConvenioModel;
+import br.com.smartmed.consultas.repository.ConsultaRepository;
 import br.com.smartmed.consultas.repository.ConvenioRepository;
 import br.com.smartmed.consultas.rest.dto.ConvenioDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,9 +20,10 @@ public class ConvenioService {
 
     @Autowired
     private ConvenioRepository convenioRepository;
-
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private ConsultaRepository consultaRepository;
 
     /**
      * Lista todos os convênios.
@@ -125,7 +127,6 @@ public class ConvenioService {
         } catch (DataIntegrityException e) {
             throw new DataIntegrityException("Erro! Não foi possível atualizar o convenio " + convenioExistente.getNome() + " !");
         } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
             if (e.getMessage() == null || e.getMessage().isBlank()) {
                 throw new ConstraintException("Erro ao atualizar o convenio " + convenioExistente.getNome() + ": Restrição de integridade de dados.");
             }
@@ -144,29 +145,26 @@ public class ConvenioService {
      * Deleta um convênio pelo ID.
      */
     @Transactional
-    public void deletar(ConvenioModel convenioExistente) {
-
+    public void deletar(Integer id) {
         try {
-            if (!convenioRepository.existsById(convenioExistente.getId())) {
-                throw new EntityNotFoundException("Convênio não encontrado no banco de dados!");
+            // Verifica se o convênio existe antes de tentar deletar
+            if (!convenioRepository.existsById(id)) {
+                throw new ObjectNotFoundException("Convênio com ID " + id + " não encontrado no banco de dados!");
             }
-            convenioRepository.delete(convenioExistente);
 
-        } catch (DataIntegrityException e) {
-            throw new DataIntegrityException("Erro! Não foi possível deletar o paciente " + convenioExistente.getNome() + " !");
-        } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
-            if (e.getMessage() == null || e.getMessage().isBlank()) {
-                throw new ConstraintException("Erro ao deletar o paciente " + convenioExistente.getNome() + ": Restrição de integridade de dados.");
+            boolean hasAssociatedConsultas = consultaRepository.existsByConvenioId(id);
+            if (hasAssociatedConsultas) {
+                throw new BusinessRuleException("Não é possível deletar este convênio, pois há consultas associadas.");
             }
+
+            convenioRepository.deleteById(id);
+
+        } catch (ObjectNotFoundException e) {
             throw e;
         } catch (BusinessRuleException e) {
-            throw new BusinessRuleException("Erro! Não foi possível deletar o paciente " + convenioExistente.getNome() + ". Violação de regra de negócio!");
-        } catch (SQLException e) {
-            throw new SQLException("Erro! Não foi possível atualizar o deletar " + convenioExistente.getNome() + ". Falha na conexão com o banco de dados!");
-        } catch (ObjectNotFoundException e) {
-            throw new ObjectNotFoundException("Erro! Não foi possível deletar o paciente" + convenioExistente.getNome() + ". Não encontrado no banco de dados!");
+            throw new BusinessRuleException("Erro! Não foi possível deletar o convênio com ID " + id + ". Violação de regra de negócio!");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao deletar o convênio com ID " + id + ".");
         }
-
     }
 }

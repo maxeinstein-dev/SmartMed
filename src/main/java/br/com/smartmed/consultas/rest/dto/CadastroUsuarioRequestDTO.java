@@ -11,7 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CadastroUsuarioRequestDTO {
-
     @NotBlank(message = "O nome é obrigatório.")
     private String nome;
 

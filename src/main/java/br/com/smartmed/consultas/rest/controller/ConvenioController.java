@@ -54,9 +54,9 @@ public class ConvenioController {
         return ResponseEntity.status(HttpStatus.OK).body(convenioExistenteDTO);
     }
 
-    @DeleteMapping
-    public /* ResponseEntity<Void> */ void deletar(@Valid @RequestBody ConvenioModel convenioExistente) {
-        convenioService.deletar(convenioExistente);
-        //return ResponseEntity.noContent().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Integer id) {
+        convenioService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

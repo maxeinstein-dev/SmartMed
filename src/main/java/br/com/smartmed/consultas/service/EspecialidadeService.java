@@ -75,7 +75,6 @@ public class EspecialidadeService {
                 DataIntegrityException e) {
             throw new DataIntegrityException("Erro! Não foi possível salvar a especialidade " + novaEspecialidade.getNome() + " !");
         } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
             if (e.getMessage() == null || e.getMessage().isBlank()) {
                 throw new ConstraintException("Erro de restrição de integridade ao salvar a especialidade " + novaEspecialidade.getNome() + ".");
             }
@@ -103,7 +102,6 @@ public class EspecialidadeService {
                 DataIntegrityException e) {
             throw new DataIntegrityException("Erro! Não foi possível salvar a especialidade " + especialidadeExistente.getNome() + " !");
         } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
             if (e.getMessage() == null || e.getMessage().isBlank()) {
                 throw new ConstraintException("Erro de restrição de integridade ao salvar a especialidade " + especialidadeExistente.getNome() + ".");
             }
@@ -135,7 +133,6 @@ public class EspecialidadeService {
         } catch (DataIntegrityException e) {
             throw new DataIntegrityException("Erro! Não foi possível deletar a especialidade " + especialidadeExistente.getNome() + " !");
         } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
             if (e.getMessage() == null || e.getMessage().isBlank()) {
                 throw new ConstraintException("Erro ao deletar a especialidade " + especialidadeExistente.getNome() + ": Restrição de integridade de dados.");
             }

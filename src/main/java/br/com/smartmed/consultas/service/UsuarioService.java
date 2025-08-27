@@ -40,7 +40,6 @@ public class UsuarioService {
         usuario.setPerfil(request.getPerfil());
         usuarioRepository.save(usuario);
 
-        // Delega a responsabilidade de vinculação para os serviços
         switch (usuario.getPerfil()) {
             case MEDICO:
                 medicoService.vincularUsuario(usuario);
@@ -49,7 +48,7 @@ public class UsuarioService {
                 recepcionistaService.vincularUsuario(usuario);
                 break;
             default:
-                // Nenhum vínculo necessário para outros perfis (ex: PACIENTE)
+                // Nenhum vínculo necessário para outros perfis (ex: PACIENTE, ADMIN)
                 break;
         }
 

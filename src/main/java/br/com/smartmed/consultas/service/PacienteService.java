@@ -102,7 +102,6 @@ public class PacienteService {
         } catch (DataIntegrityException e) {
             throw new DataIntegrityException("Erro! Não foi possível salvar o paciente " + novoPaciente.getNome() + " !");
         } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
             if (e.getMessage() == null || e.getMessage().isBlank()) {
                 throw new ConstraintException("Erro de restrição de integridade ao salvar o paciente " + novoPaciente.getNome() + ".");
             }
@@ -139,7 +138,6 @@ public class PacienteService {
         } catch (DataIntegrityException e) {
             throw new DataIntegrityException("Erro! Não foi possível atualizar o paciente " + pacienteExistente.getNome() + " !");
         } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
             if (e.getMessage() == null || e.getMessage().isBlank()) {
                 throw new ConstraintException("Erro ao atualizar o paciente " + pacienteExistente.getNome() + ": Restrição de integridade de dados.");
             }
@@ -178,7 +176,6 @@ public class PacienteService {
         } catch (DataIntegrityException e) {
             throw new DataIntegrityException("Erro! Não foi possível deletar o paciente " + pacienteExistente.getNome() + " !");
         } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
             if (e.getMessage() == null || e.getMessage().isBlank()) {
                 throw new ConstraintException("Erro ao deletar o paciente " + pacienteExistente.getNome() + ": Restrição de integridade de dados.");
             }

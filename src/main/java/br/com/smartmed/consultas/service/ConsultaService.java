@@ -117,6 +117,11 @@ public class ConsultaService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public boolean existeConsultaPorConvenioId(Integer convenioId) {
+        return consultaRepository.existsByConvenioId(convenioId);
+    }
+
     /**
      * Salva uma nova consulta na base de dados.
      *
@@ -255,16 +260,6 @@ public class ConsultaService {
                 throw new ObjectNotFoundException(
                         "Nenhum médico encontrado para a especialidade com ID " + request.getEspecialidadeId() + ".");
             }
-
-            // Critério de ordenação: menor valor da consulta
-            // medicosElegiveis.sort(Comparator.comparingDouble(MedicoModel::getValorConsultaReferencia));
-
-            // Aqui, você pode adicionar a lógica de proximidade como um critério
-            // secundário, se desejar
-            // medicosElegiveis.sort(Comparator.comparingDouble(MedicoModel::getValorConsultaReferencia)
-            // .thenComparingDouble(medico ->
-            // distanciaService.calcularDistancia(paciente.getEndereco(),
-            // medico.getEndereco())));
 
         } else {
             throw new BusinessRuleException("É necessário informar a especialidade para agendamento automático.");

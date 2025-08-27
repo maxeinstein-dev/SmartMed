@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CancelamentoConsultaDTO {
-
     @NotNull(message = "O ID da consulta não pode ser nulo.")
     private Integer consultaId;
 

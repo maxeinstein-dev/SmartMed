@@ -38,6 +38,8 @@ public interface ConsultaRepository extends JpaRepository<ConsultaModel, Integer
      */
     List<ConsultaModel> findByStatus(String status);
 
+    boolean existsByConvenioId(Integer convenioId);
+
     boolean existsById(Integer id);
 
     @Query("SELECT c FROM ConsultaModel c " +

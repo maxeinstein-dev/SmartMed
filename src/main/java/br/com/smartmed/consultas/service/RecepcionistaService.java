@@ -135,7 +135,6 @@ public class RecepcionistaService {
         } catch (DataIntegrityException e) {
             throw new DataIntegrityException("Erro! Não foi possível salvar a Recepcionista " + novoRecepcionista.getNome() + " !");
         } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
             if (e.getMessage() == null || e.getMessage().isBlank()) {
                 throw new ConstraintException("Erro de restrição de integridade ao salvar a Recepcionista " + novoRecepcionista.getNome() + ".");
             }
@@ -172,7 +171,6 @@ public class RecepcionistaService {
         } catch (DataIntegrityException e) {
             throw new DataIntegrityException("Erro! Não foi possível atualizar a Recepcionista " + RecepcionistaExistente.getNome() + " !");
         } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
             if (e.getMessage() == null || e.getMessage().isBlank()) {
                 throw new ConstraintException("Erro ao atualizar a Recepcionista " + RecepcionistaExistente.getNome() + ": Restrição de integridade de dados.");
             }
@@ -211,7 +209,6 @@ public class RecepcionistaService {
         } catch (DataIntegrityException e) {
             throw new DataIntegrityException("Erro! Não foi possível deletar a Recepcionista " + RecepcionistaExistente.getNome() + " !");
         } catch (ConstraintException e) {
-            // Relança a mensagem original ou adiciona contexto
             if (e.getMessage() == null || e.getMessage().isBlank()) {
                 throw new ConstraintException("Erro ao deletar a Recepcionista " + RecepcionistaExistente.getNome() + ": Restrição de integridade de dados.");
             }

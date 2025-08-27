@@ -51,7 +51,6 @@ public class RelatorioService {
                     consultas);
             List<FaturamentoResponseDTO.ConvenioResumoDTO> porConvenio = calcularPorConvenio(consultas);
 
-            // Monta resposta
             FaturamentoResponseDTO response = new FaturamentoResponseDTO();
             response.setTotalGeral(totalGeral);
             response.setPorFormaPagamento(porFormaPagamento);
@@ -59,10 +58,8 @@ public class RelatorioService {
 
             return response;
 
-        } catch (BusinessRuleException e) {
-            throw e; // Re-lança exceções de negócio específicas
-        } catch (ObjectNotFoundException e) {
-            throw e; // Re-lança exceções de não encontrado
+        } catch (BusinessRuleException | ObjectNotFoundException e) {
+            throw e;
         } catch (Exception e) {
             throw new SQLException("Erro ao gerar relatório de faturamento. " + e.getMessage());
         }
@@ -150,10 +147,8 @@ public class RelatorioService {
                     .map(entry -> new EspecialidadeFrequenciaDTO(entry.getKey(), entry.getValue()))
                     .sorted(Comparator.comparing(EspecialidadeFrequenciaDTO::getQuantidade).reversed())
                     .collect(Collectors.toList());
-        } catch (ObjectNotFoundException e) {
+        } catch (ObjectNotFoundException | BusinessRuleException e) {
             throw new ObjectNotFoundException("Erro! Não foi possível gerar o relatório. " + e.getMessage());
-        } catch (BusinessRuleException e) {
-            throw new BusinessRuleException("Erro! Não foi possível gerar o relatório. " + e.getMessage());
         } catch (SQLException e) {
             throw new SQLException("Erro! Não foi possível gerar o relatório. Falha na conexão com o banco de dados.");
         }
